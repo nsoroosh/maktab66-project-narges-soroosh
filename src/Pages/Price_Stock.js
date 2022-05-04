@@ -1,7 +1,9 @@
 import React from 'react'
+import Adminpagelyout from '../Hoc/Adminpagelaout'
 
-export default function Price_Stock() {
+ function Price_Stock() {
   return (
     <div>Price_Stock</div>
   )
 }
+export default Adminpagelyout(Price_Stock)

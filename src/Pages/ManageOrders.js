@@ -1,7 +1,10 @@
 import React from 'react'
+import Adminpagelyout from '../Hoc/Adminpagelaout'
+import Admin from './Admin'
 
-export default function ManageOrders() {
+function ManageOrders() {
   return (
     <div>ManageOrders</div>
   )
 }
+export default  Adminpagelyout(ManageOrders)

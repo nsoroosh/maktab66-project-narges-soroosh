@@ -1,4 +1,4 @@
-import {Routes , Route} from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 
 import { render } from "react-dom";
 import Admin from "../Pages/Admin";
@@ -15,39 +15,29 @@ import Products from "../Pages/Products";
 import ResultPament from "../Pages/ResultPament";
 import SingleProduct from "../Pages/SingleProduct";
 
-
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element ={<Home/>}/>
-          <Route path="card" element={<Card />}>
-            <Route path="Customerinfo" element={<CustomerInfo />}>
-              <Route path="Payment" element={<Payment />}>
-                <Route path=":Resultpayment" element={<ResultPament />} />
-              </Route>
-            </Route>
-          </Route>
-          <Route path="admin" element={<Admin />}>
-              <Route index element={<Edit_Add />} />
-              <Route path="price/stock page" element={<Price_Stock />} />
-              <Route path="mange orders" element={<ManageOrders />} />
-          </Route>
-          <Route path=":products" element={<Products />}>
-            <Route path=":productid" element={<SingleProduct />} />
-          </Route>
+        <Route path="/" element={<App />} />
+        <Route index element={<Home />} />
+        <Route path="card" element={<Card />} />
+        <Route path="customerinfo" element={<CustomerInfo />} />
+        <Route path="Payment" element={<Payment />}>
+          <Route path=":Resultpayment" element={<ResultPament />} />
+        </Route>
+        <Route path="admin" element={<Admin />} />
+        <Route index element={<Edit_Add />} />
+        <Route path="price_stock page" element={<Price_Stock />} />
+        <Route path="mange orders" element={<ManageOrders />} />
+        <Route path="products" element={<Products />}>
           <Route path=":productid" element={<SingleProduct />} />
         </Route>
-        <Route path="login" element={<Login/>}/>
+        <Route path=":productid" element={<SingleProduct />} />
+
+        <Route path="login" element={<Login />} />
         <Route path="*" element={<Noresponse />} />
       </Routes>
-      {/* <Routes>
-        <Route path="/" element={<App />} />
-           <Route index element={<Home/>}/>
-           <Route path="card" element={<Payment/>}/>
-           <Route path=":nextinformation" />
-      </Routes> */}
     </div>
   );
 }
@@ -55,6 +45,3 @@ function App() {
 export default App;
 
 
-function requiredauth(){
-
-}

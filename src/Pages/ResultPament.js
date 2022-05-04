@@ -1,7 +1,9 @@
 import React from 'react'
-
-export default function ResultPament() {
+import Productpagelyout from '../Hoc/Productpagelyout'
+ function ResultPament() {
   return (
     <div>ResultPament</div>
   )
 }
+
+export default Productpagelyout(ResultPament)

@@ -1,7 +1,11 @@
 import React from 'react'
+import Productpagelyout from '../Hoc/Productpagelyout'
 
-export default function CustomerInfo() {
+ function CustomerInfo() {
   return (
     <div>CustomerInfo</div>
   )
 }
+
+
+export default Productpagelyout(CustomerInfo)

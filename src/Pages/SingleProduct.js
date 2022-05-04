@@ -1,7 +1,9 @@
 import React from 'react'
+import Productpagelyout from '../Hoc/Productpagelyout'
 
-export default function SingleProduct() {
+ function SingleProduct() {
   return (
     <div>SingleProduct</div>
   )
 }
+export default Productpagelyout(SingleProduct)

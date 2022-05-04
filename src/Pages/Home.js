@@ -1,11 +1,12 @@
 import React from 'react'
+import {SimpleSlider} from '../Components/Slider'
 import Productpagelyout from '../Hoc/Productpagelyout'
 
 function Home() {
   return (
-    <div>
-      
-    </div>
+   <>
+   <SimpleSlider/>
+   </>
   )
 }
 export default Productpagelyout(Home)

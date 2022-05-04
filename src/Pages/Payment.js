@@ -1,7 +1,9 @@
 import React from 'react'
+import Productpagelyout from '../Hoc/Productpagelyout'
 
-export default function Payment() {
+ function Payment() {
   return (
     <div>Payment</div>
   )
 }
+export default Productpagelyout(Payment)

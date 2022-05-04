@@ -1,7 +1,9 @@
 import React from 'react'
+import Adminpagelyout from '../Hoc/Adminpagelaout'
 
-export default function Edit_Add() {
+ function Edit_Add() {
   return (
     <div>Edit_Add</div>
   )
 }
+export default Adminpagelyout(Edit_Add)
