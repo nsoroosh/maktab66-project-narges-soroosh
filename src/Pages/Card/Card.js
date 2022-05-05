@@ -1,5 +1,5 @@
 import React from 'react'
-import Adminpagelyout from '../Hoc/Adminpagelaout'
+import Adminpagelyout from '../Lyouts/AdminPage/Adminpagelaout'
 
  const Card = () => {
   return (

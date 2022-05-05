@@ -1,6 +1,6 @@
 import React from 'react'
-import { Footer } from '../Lyouts/Footer'
-import ResponsiveAppBar from '../Lyouts/AdminHeader'
+import { Footer } from '../Footer'
+import ResponsiveAppBar from './AdminHeader'
 
 const Adminpagelyout = (PageComponent) => {
     return function WithPage({ ...props }) {
