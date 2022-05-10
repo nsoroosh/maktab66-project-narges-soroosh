@@ -1,20 +1,20 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import logo from "../Assets/images/artxlogo.png"
-import { Link, Outlet } from 'react-router-dom';
-const pages = ['سفارش ها  ', 'کالا ها ', 'موجودی و قیمت ها   '];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import logo from "../../Assets/images/artxlogo.png";
+import { Link, NavLink, Outlet } from "react-router-dom";
+const pages = ["سفارش ها  ", "کالا ها ", "موجودی و قیمت ها   "];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -39,10 +39,12 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
-            <img src={logo} alt="Logo" width="50" height="50"/>
-            </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
+            <Link to={"/"}>
+              <img src={logo} alt="Logo" width="50" height="50" />
+            </Link>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -57,53 +59,80 @@ const ResponsiveAppBar = () => {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center"><Link to="/admin" >{page}</Link></Typography>
-                </MenuItem>
-              ))}
+              <MenuItem key="manage orders" onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/manage orders">سفارش ها</Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem key="admin" onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/admin">کالا ها </Link>
+                </Typography>
+              </MenuItem>
+              <MenuItem key="price_stock page" onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <Link to="/price_stock page"> موجودی و قیمت ها </Link>
+                </Typography>
+              </MenuItem>
             </Menu>
-            <Outlet/>
+            <Outlet />
           </Box>
-          <Box  sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <img src={logo} alt="Logo" width="50" height="50"/>
-            </Box>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <img src={logo} alt="Logo" width="50" height="50" />
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            <Button
+              key="manage orders"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <Typography textAlign="center">
+                <Link to="/manage orders">سفارش ها</Link>
+              </Typography>
+            </Button>
+            <Button
+              key="admin"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <Typography textAlign="center">
+                <Link to="/admin">کالا ها </Link>
+              </Typography>
+            </Button>
+            <Button
+              key="price_stock page"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <Typography textAlign="center">
+                <Link to="/price_stock page">موجودی و قیمت ها</Link>
+              </Typography>
+            </Button>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 0, display: { xs: 'flex', md: 'flex' } }}
-          >
-            ARTXMODE
-          </Typography>
-            
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ flexGrow: 0, display: { xs: "flex", md: "flex" } }}
+            >
+              ARTXMODE
+            </Typography>
           </Box>
         </Toolbar>
       </Container>

@@ -1,5 +1,6 @@
 import React from 'react'
-import Adminpagelyout from '../Lyouts/AdminPage/Adminpagelaout'
+import Adminpagelyout from '../../Lyouts/AdminPage/Adminpagelaout'
+
 
  function Edit_Add() {
   return (

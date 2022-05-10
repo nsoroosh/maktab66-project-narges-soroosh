@@ -1,5 +1,5 @@
 import React from 'react'
-import Adminpagelyout from '../Lyouts/AdminPage/Adminpagelaout'
+import Productpagelyout from '../../Lyouts/ProductPage/Productpagelyout' 
 
  const Card = () => {
   return (
@@ -7,4 +7,4 @@ import Adminpagelyout from '../Lyouts/AdminPage/Adminpagelaout'
   )
 }
 
-export default Adminpagelyout(Card)
+export default Productpagelyout(Card)

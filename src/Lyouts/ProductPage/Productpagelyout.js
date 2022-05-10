@@ -1,9 +1,9 @@
 import React from 'react'
-import { Footer } from '../Lyouts/Footer'
-import ResponsiveAppBar from '../Lyouts/ProductPage/Header'
+import { Footer } from '../Footer'
+import ResponsiveAppBar from '../ProductPage/Header'
 
 const Productpagelyout = (PageComponent) => {
-    return function WithPage({ ...props }) {
+    return function lyout() {
         return (
             <>
             <ResponsiveAppBar/>

@@ -1,5 +1,6 @@
 import React from 'react'
-import Productpagelyout from '../Hoc/Productpagelyout'
+import Productpagelyout from '../../Lyouts/ProductPage/Productpagelyout' 
+
 
  function SingleProduct() {
   return (

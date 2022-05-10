@@ -1,6 +1,7 @@
 import React from 'react'
 import {SimpleSlider} from './Slider'
-import Productpagelyout from '../Hoc/Productpagelyout'
+import Productpagelyout from '../../Lyouts/ProductPage/Productpagelyout' 
+
 
 function Home() {
   return (
