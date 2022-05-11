@@ -26,24 +26,25 @@ function App() {
         <Route path="customerinfo" element={<CustomerInfo />} />
         <Route path="Payment" element={<Payment />} />
         <Route path=":Resultpayment" element={<ResultPament />} />
+        <Route path="products" element={<Products />} />
+        <Route path=":productid" element={<SingleProduct />} />
+        <Route path="login" element={<Login />} />
         <Route path="admin" element={
         <ProtectedRoute>
         <Edit_Add />
         </ProtectedRoute>
         } />
-        <Route path="price_stock page" element={
+        <Route path="price_stock" element={
         <ProtectedRoute>
         <Price_Stock />
         </ProtectedRoute>
-      } />
-        <Route path="manage orders" element={
+        } />
+        <Route path="orders" element={
         <ProtectedRoute>
         <ManageOrders />
         </ProtectedRoute>
-      } />
-        <Route path="products" element={<Products />} />
-        <Route path=":productid" element={<SingleProduct />} />
-        <Route path="login" element={<Login />} />
+        } />
+        
         <Route path="*" element={<Noresponse />} />
       </Routes>
     </div>

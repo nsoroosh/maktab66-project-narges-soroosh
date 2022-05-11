@@ -7,7 +7,6 @@ const Adminpagelyout = (PageComponent) => {
         return (
             <>
             <ResponsiveAppBar/>
-            <Link to={"/"}>بازگشت به سایت</Link>
             <PageComponent/>
             <Footer/>
             </>

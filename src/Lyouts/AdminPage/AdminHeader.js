@@ -101,7 +101,7 @@ const ResponsiveAppBar = () => {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <Typography textAlign="center">
-                <Link to="/manage orders">سفارش ها</Link>
+                <Link to="/orders">سفارش ها</Link>
               </Typography>
             </Button>
             <Button
@@ -110,7 +110,7 @@ const ResponsiveAppBar = () => {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <Typography textAlign="center">
-                <Link to="/admin">کالا ها </Link>
+                <Link to="/admin" >کالا ها </Link>
               </Typography>
             </Button>
             <Button
@@ -119,9 +119,20 @@ const ResponsiveAppBar = () => {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               <Typography textAlign="center">
-                <Link to="/price_stock page">موجودی و قیمت ها</Link>
+                <Link to="/price_stock">موجودی و قیمت ها</Link>
               </Typography>
             </Button>
+            <Button
+              key="price_stock page"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              <Typography textAlign="center">
+              <Link to={"/"}>بازگشت به سایت</Link>
+
+              </Typography>
+            </Button>
+
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

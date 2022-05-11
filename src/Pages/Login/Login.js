@@ -4,21 +4,25 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import {useDispatch,useSelector} from 'react-redux'
 import { addtoken } from '../../redux/reducers/TokenSlice';
 import userLogin from './userLogin';
-
+import styled from '@emotion/styled';
 
 const getToken = () => {
   const tokenString = localStorage.getItem('token');
   const userToken = JSON.parse(tokenString);
   return userToken?.token
 };
-
+const Wrapper = styled.div`
+display: flex;
+flex-direction: column;
+`;
 function Register () {
   const navigate = useNavigate()
   const authenticate = useSelector(state => state.token.value)
   const dispatch = useDispatch()
   return (
-  <div>
-    <h1>Any place in your app!</h1>
+    <>
+    <h1>Sign in</h1>
+  
     <Formik
       initialValues={{ username: '', password: '' }}
       validate={values => {
@@ -40,6 +44,7 @@ function Register () {
       }}
     >
       {({ isSubmitting }) => (
+        <Wrapper>
         <Form>
           <Field type="username" name="username" />
           <ErrorMessage name="username" component="div" />
@@ -50,9 +55,11 @@ function Register () {
           </button>
           <button  onClick={()=>navigate("/")}>cancel</button>
         </Form>
+        </Wrapper>
       )}
     </Formik>
-  </div>
+ 
+  </>
   )
 }
 
