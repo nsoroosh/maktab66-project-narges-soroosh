@@ -1,13 +1,18 @@
-import React from 'react'
-import {SimpleSlider} from './Slider'
-import Productpagelyout from '../../Lyouts/ProductPage/Productpagelyout' 
-
-
+import React from "react";
+import { SimpleSlider } from "./Slider";
+import Productpagelyout from "../../Lyouts/ProductPage/Productpagelyout";
+import CategoryList from "./CategoryList";
+import { Link } from "@mui/material";
 function Home() {
+
   return (
-   <>
-   {/* <SimpleSlider/> */}
-   </>
-  )
+    <>
+      
+        <>
+          <CategoryList />
+        </>;
+      
+    </>
+  );
 }
-export default Productpagelyout(Home)
+export default Productpagelyout(Home);

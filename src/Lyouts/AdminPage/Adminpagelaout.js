@@ -8,7 +8,7 @@ const Adminpagelyout = (PageComponent) => {
             <>
             <ResponsiveAppBar/>
             <PageComponent/>
-            <Footer/>
+            {/* <Footer/> */}
             </>
         )
         }

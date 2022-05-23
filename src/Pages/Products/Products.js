@@ -1,11 +1,11 @@
 import React from 'react'
 import Productpagelyout from '../../Lyouts/ProductPage/Productpagelyout' 
-import { Outlet } from 'react-router-dom'
+import RowAndColumnSpacing from './Grid'
  function Products() {
   return (
-    <div>Products
-
-    </div>
+   <>
+   <RowAndColumnSpacing/>
+   </>
   )
 }
 export default Productpagelyout(Products)

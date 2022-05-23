@@ -8,7 +8,7 @@ const Productpagelyout = (PageComponent) => {
             <>
             <ResponsiveAppBar/>
             <PageComponent/>
-            <Footer/>
+            {/* <Footer/> */}
             </>
         )
         }

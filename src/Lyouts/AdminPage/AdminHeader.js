@@ -36,11 +36,11 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{backgroundColor:"white" , color:"black" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>
-            <Link to={"/"}>
+            <Link to={"/"} >
               <img src={logo} alt="Logo" width="50" height="50" />
             </Link>
           </Box>
@@ -73,9 +73,9 @@ const ResponsiveAppBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem key="manage orders" onClick={handleCloseNavMenu}>
+              <MenuItem key=" orders" onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/manage orders">سفارش ها</Link>
+                  <Link to="/orders">سفارش ها</Link>
                 </Typography>
               </MenuItem>
               <MenuItem key="admin" onClick={handleCloseNavMenu}>
@@ -83,9 +83,9 @@ const ResponsiveAppBar = () => {
                   <Link to="/admin">کالا ها </Link>
                 </Typography>
               </MenuItem>
-              <MenuItem key="price_stock page" onClick={handleCloseNavMenu}>
+              <MenuItem key="price_stock " onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">
-                  <Link to="/price_stock page"> موجودی و قیمت ها </Link>
+                  <Link to="/price_stock "> موجودی و قیمت ها </Link>
                 </Typography>
               </MenuItem>
             </Menu>
@@ -123,7 +123,7 @@ const ResponsiveAppBar = () => {
               </Typography>
             </Button>
             <Button
-              key="price_stock page"
+              key="back"
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: "white", display: "block" }}
             >

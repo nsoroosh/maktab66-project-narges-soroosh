@@ -7,15 +7,10 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../../Assets/images/artxlogo.png";
 import { Link, Navigate, Outlet } from "react-router-dom";
-const pages = ["محصولات ", "مدیریت ", "سبد خرید "];
-const pageslink = ["card", "admin", "products"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -39,7 +34,7 @@ const ResponsiveAppBar = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor:"white" , color:"black"}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Box sx={{ mr: 2, display: { xs: "none", md: "flex" } }}>

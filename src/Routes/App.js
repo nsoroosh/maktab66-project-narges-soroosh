@@ -15,7 +15,7 @@ import Products from "../Pages/Products/Products";
 import ResultPament from "../Pages/ResultPayment/ResultPament";
 import SingleProduct from "../Pages/SingleProduct/SingleProduct";
 import ProtectedRoute from "./Protected/ProtectedRoute";
-import PrivateRoutes from "./Private/privateRoute";
+import PrivateRoute from "./Private/privateRoute";
 function App() {
   return (
     <div className="App">
@@ -28,7 +28,11 @@ function App() {
         <Route path=":Resultpayment" element={<ResultPament />} />
         <Route path="products" element={<Products />} />
         <Route path=":productid" element={<SingleProduct />} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={
+        <PrivateRoute>
+        <Login />
+        </PrivateRoute>
+        } />
         <Route path="admin" element={
         <ProtectedRoute>
         <Edit_Add />

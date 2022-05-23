@@ -1,15 +1,17 @@
-import { Container, Grid  , Paper} from "@mui/material";
+import { Container, Grid  } from "@mui/material";
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import React from "react";
-import { styled } from '@mui/material/styles';
 
 
 const style={
   
-  position: "fixed",
-  left: "0",
-  bottom: "0",
+  position:"fixed",
+  bottom:"0",
+  left:"0",
+  width:"100%",
+  height: "90px",
+  boxShadow:"0 4px 30px rgba(0, 0, 0, 0.1)"
 }
 
 export const Footer = () => {

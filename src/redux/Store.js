@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import TokenReducer from './reducers/TokenSlice'
-import  ServerDataReducer  from './reducers/serverData'
-import LoadProductdata from './reducers/LoadProductdata'
+import  subcategorydataReducer  from './reducers/serverData'
+import EdititemReducer from './reducers/Edititem'
+import stockedititemReducer from './reducers/stockeditItem'
+import newstockvalueReducer from './reducers/newstockValue'
 export default configureStore({
   reducer: {
       token:TokenReducer,
-      data:ServerDataReducer,
-      loadproductdata:LoadProductdata
+      data:subcategorydataReducer,
+      edititem:EdititemReducer,
+      stockedititem:stockedititemReducer,
+      newstockvalue:newstockvalueReducer
   }
 })

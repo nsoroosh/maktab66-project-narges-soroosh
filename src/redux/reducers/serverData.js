@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const ServerData = createSlice({
-  name: 'productdata',
+  name: 'subcategorydata',
   initialState: {
-    value: []
+    value: ["ابستره" ,"گرافیک ارت","ایلاستریتور","سیاه و سفید "]
   },
   reducers: {
-    getdata:(state,newdata)=>{
-        state.value=newdata
+    getdata:(state,action)=>{
+        state.value=action.payload
     }
   }
 })
