@@ -1,35 +1,30 @@
 import { Container } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ActionAreaCard from "./Card";
 import "./Home.css";
+import FechRows from "./FechRows";
 import { useSelector, useDispatch } from "react-redux";
 
-export default function CategoryList() {
-  const subcategory = useSelector((state) => state.data.value);
+import { addcategorydata } from "../../redux/reducers/Category1";
 
+export default function CategoryList() {
+  const dispatch = useDispatch();
+  const subcategory = useSelector((state) => state.subcategorydata.value);
+  
+  
   return (
     <>
-      <div class="container">
-        {subcategory.map((res) => {
-          <Link to="">{res}</Link>;
-        })}
-
-        <div class="row">
-          <div class="card">
-            <ActionAreaCard />
-          </div>
-          <div class="card">
-            <ActionAreaCard />
-          </div>
-          <div class="card">
-            <ActionAreaCard />
-          </div>
-          <div class="card">
-            <ActionAreaCard />
-          </div>
-        </div>
-      </div>
+      {subcategory.map((subcategory,index) => (
+        <Link
+          style={{ display: "block", margin: "1rem 2rem" }}
+          to={`/${subcategory}`}
+          key={subcategory}
+        >
+          {subcategory}
+          <FechRows item={index+1}/>
+        </Link>
+      ))}
+      {/* {console.log(getsubcategorydata(1))} */}
     </>
   );
 }

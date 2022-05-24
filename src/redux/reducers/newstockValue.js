@@ -13,6 +13,6 @@ export const Newstockvalue = createSlice({
   }
 })
 
-export const {  incrementByAmount } = Newstockvalue.actions
+export const {  addnewstockvalue } = Newstockvalue.actions
 
 export default Newstockvalue.reducer

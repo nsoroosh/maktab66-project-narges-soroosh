@@ -4,12 +4,14 @@ import  subcategorydataReducer  from './reducers/serverData'
 import EdititemReducer from './reducers/Edititem'
 import stockedititemReducer from './reducers/stockeditItem'
 import newstockvalueReducer from './reducers/newstockValue'
+import category1Reducer from "./reducers/Category1"
 export default configureStore({
   reducer: {
       token:TokenReducer,
-      data:subcategorydataReducer,
+      subcategorydata:subcategorydataReducer,
       edititem:EdititemReducer,
       stockedititem:stockedititemReducer,
-      newstockvalue:newstockvalueReducer
+      newstockvalue:newstockvalueReducer,
+      category1:category1Reducer
   }
 })

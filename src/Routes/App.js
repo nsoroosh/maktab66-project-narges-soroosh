@@ -26,7 +26,7 @@ function App() {
         <Route path="customerinfo" element={<CustomerInfo />} />
         <Route path="Payment" element={<Payment />} />
         <Route path=":Resultpayment" element={<ResultPament />} />
-        <Route path="products" element={<Products />} />
+        <Route path=":productcatagory" element={<Products />} />
         <Route path=":productid" element={<SingleProduct />} />
         <Route path="login" element={
         <PrivateRoute>

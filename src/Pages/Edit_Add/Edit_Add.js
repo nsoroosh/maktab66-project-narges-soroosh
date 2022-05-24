@@ -24,7 +24,7 @@ function Edit_Add() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const dispatch = useDispatch()
   // const [subcategory, setsubcategory] = useState();
-  const subcategory = useSelector(state => state.data.value)
+  const subcategory = useSelector(state => state.subcategorydata.value)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -94,7 +94,7 @@ function Edit_Add() {
                 </TableCell>
                 <TableCell align="right">
                   <img
-                    src={`http://localhost:3002${row.thumbnail}`}
+                    src={`http://localhost:3002${row.image}`}
                     width="30px"
                   />
                 </TableCell>

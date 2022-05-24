@@ -34,7 +34,7 @@ function Price_Stock() {
     axios
       .get(`http://localhost:3002/products?_page=${page}&_limit=${items}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setData(res.data);
         setLoading(false);
       })
@@ -42,9 +42,9 @@ function Price_Stock() {
         console.log(err);
       });
   }
-  function editTask(id, newName) {
+  function editTask(id, newdata) {
     axios
-      .put(`http://localhost:3002/products/${id}`, { price: newName })
+      .put(`http://localhost:3002/products/${id}`, newdata)
       .then((res) => {
         console.log(res);
         // setstockeditmode(false);

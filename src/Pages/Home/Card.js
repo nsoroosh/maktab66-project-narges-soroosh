@@ -5,22 +5,22 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 
-export default function ActionAreaCard() {
+export default function ActionAreaCard(props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140"
-          image="https://picsum.photos/300/200"
-          alt="green iguana"
+          height="200"
+          image={`http://localhost:3002${props.image}`}
+          alt={props.name}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {props.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
+           {props.price}
           </Typography>
         </CardContent>
       </CardActionArea>
