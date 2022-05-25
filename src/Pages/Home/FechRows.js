@@ -1,21 +1,9 @@
 import React , {useEffect , useState} from "react";
 import ActionAreaCard from "./Card";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 export default function FechRows(props) {
-  const [data, setData] = useState([
-    {
-      artist: "نینا براون",
-      count: "12",
-      description:
-        "نرم اما جسورانه، ارگانیک و در عین حال هندسی. سری Solid Shapes دانمارکی Nina Bruun دارای بیانی بی انتها و زبانی آرام از شکل و رنگ است.",
-      id: 1,
-      image: "/files/55109876038a989f3367290f71783828",
-      name: "فرم های جامد ",
-      price: "120000",
-      subcategory: "1",
-      thumbnail: "/files/55109876038a989f3367290f71783828",
-    },
-  ]);
+  const [data, setData] = useState([ ]);
   const [isLoading, setLoading] = useState(true);
   async function productdata(input) {
     try {
@@ -33,6 +21,7 @@ export default function FechRows(props) {
     }
   }
 
+ 
   useEffect(() => {
     productdata(props.item);
   }, []);
@@ -40,6 +29,7 @@ export default function FechRows(props) {
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }
+
 
   return (
     <div class="row">

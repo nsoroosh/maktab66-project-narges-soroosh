@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import "./Home.css";
 import FechRows from "./FechRows";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,14 +17,14 @@ export default function CategoryList() {
       {subcategory.map((subcategory,index) => (
         <Link
           style={{ display: "block", margin: "1rem 2rem" }}
-          to={`/${subcategory}`}
+          to={`/products/${index+1}`}
           key={subcategory}
         >
           {subcategory}
           <FechRows item={index+1}/>
         </Link>
       ))}
-      {/* {console.log(getsubcategorydata(1))} */}
+      <Outlet/>
     </>
   );
 }

@@ -24,10 +24,12 @@ function App() {
         <Route index element={<Home />} />
         <Route path="card" element={<Card />} />
         <Route path="customerinfo" element={<CustomerInfo />} />
-        <Route path="Payment" element={<Payment />} />
+        <Route path="Payment" element={<Payment />} >
+
         <Route path=":Resultpayment" element={<ResultPament />} />
-        <Route path=":productcatagory" element={<Products />} />
-        <Route path=":productid" element={<SingleProduct />} />
+        </Route>
+        <Route path="products/:productcatagory" element={<Products />} />
+        <Route path="product/:productid" element={<SingleProduct />} />
         <Route path="login" element={
         <PrivateRoute>
         <Login />
