@@ -31,22 +31,22 @@ const  handleChangefile=(event)=> {
 
  
 const  handleSubmit=(event)=> {
-    const loginFormData = new FormData();
-    loginFormData.append("image",`/files/${image}`);
-    loginFormData.append("thumbnail",`/files/${image}`)
-    loginFormData.append("name",name);
-    loginFormData.append("artist",artist)
-    loginFormData.append("price",price)
-    loginFormData.append("count",count)
-    loginFormData.append("description",description);
-    loginFormData.append("subcategory", subcategory);
-    console.log(loginFormData);
+  const adddata = {
+    "image":image,
+    "name":name,
+    "artist":artist,
+    "price":price,
+    "count":count,
+    "description":description,
+    "subcategory": subcategory
+  }
+    // console.log(loginFormData);
     try {
       const response = axios({
         method: "post",
         url: "http://localhost:3002/products",
-        data: loginFormData,
-        headers: { "Content-Type": "multipart/form-data" },
+        data: adddata,
+        headers: { "Content-Type": 'application/json'},
       });
     } catch (error) {
       console.log(error);
@@ -57,44 +57,52 @@ const  handleSubmit=(event)=> {
   return (
     <form onSubmit={handleSubmit}>
     <input type="file" onChange={handleChangefile} name={"image"} />
+    <img src={`http://localhost:3002${image}`} width="30px" />
+
     <label style={{display:"block"}}>
       {"نام:"}
+    </label>
+
       <input
         type="text"
         value={name}
         onChange={(e)=>setname(e.target.value)}
         name={"name"}
       />
-    </label>
     <label style={{display:"block"}}>
       {"قیمت :"}
+    </label>
+
       <input
         type="text"
         value={price}
         onChange={(e)=>setprice(e.target.value)}
         name={"price"}
       />
-    </label>
     <label style={{display:"block"}}>
       {"هنرمند :"}
+    </label>
+
       <input
         type="text"
         value={artist}
         onChange={(e)=>setartist(e.target.value)}
         name={"artist"}
       />
-    </label>
     <label style={{display:"block"}}>
       {" تعداد :"}
+    </label>
+
       <input
         type="text"
         value={count}
         onChange={(e)=>setcount(e.target.value)}
         name={"count"}
       />
-    </label>
     <label style={{display:"block"}}>
       {"دسته بندی :"}
+    </label>
+
       <select
         value={subcategory}
         onChange={(e)=>setsubcategory(e.target.value)}
@@ -105,16 +113,16 @@ const  handleSubmit=(event)=> {
         <option value="2">ایلاستریتور</option>
         <option value="3">سیاه و سفید</option>
       </select>
-    </label>
     <label style={{display:"block"}}>
       {"توضیحات :"}
+    </label>
+
       <textarea
         value={description}
         onChange={(e)=>setdescription(e.target.value)}
         name={"description"}
-      />
-    </label>
-    <input type="submit" value="Submit" />
+      /><br></br>
+    <input type="submit" value="ذخیره" />
   </form>
   )
 }

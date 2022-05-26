@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-export const Category1 = createSlice({
-  name: 'category1',
+export const Category = createSlice({
+  name: 'categories',
   initialState: {
-    value: []
+    value: ["دیجیتال ارت","نقاشی","عکس","تایپوگرافی"]
   },
   reducers: {
     addcategorydata:(state,action)=>{
@@ -13,6 +13,6 @@ export const Category1 = createSlice({
 })
 
 
-export const { addcategorydata } = Category1.actions
+export const { addcategorydata } = Category.actions
 
-export default Category1.reducer
+export default Category.reducer

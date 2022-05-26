@@ -8,21 +8,21 @@ function handleClick(event) {
   console.info('You clicked a breadcrumb.');
 }
 
-export default function BasicBreadcrumbs() {
+export default function BasicBreadcrumbs(props) {
   return (
     <div role="presentation" onClick={handleClick}>
       <Breadcrumbs aria-label="breadcrumb">
         <Link underline="hover" color="inherit" href="/">
-          MUI
+          {props.category}
         </Link>
         <Link
           underline="hover"
           color="inherit"
-          href="/material-ui/getting-started/installation/"
+          href={`/products/${props.subcategoryId}`}
         >
-          Core
+          {props.subcategory}
         </Link>
-        <Typography color="text.primary">Breadcrumbs</Typography>
+        <Typography color="text.primary">{props.name}</Typography>
       </Breadcrumbs>
     </div>
   );

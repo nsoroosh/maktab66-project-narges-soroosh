@@ -11,8 +11,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import RadioButtonsGroup from './RadioButton';
 import TablePagination from '@mui/material/TablePagination';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
 
 import { Box } from '@mui/material';
  function ManageOrders() {
@@ -20,7 +23,7 @@ import { Box } from '@mui/material';
   const [isLoading, setLoading] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+const [status, setstatus] = useState()
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -32,7 +35,10 @@ import { Box } from '@mui/material';
    function productdata(page,items){
     axios.get(`http://localhost:3002/orders?_page=${page}&_limit=${items}`)
     .then(res => { 
-                    console.log(res.data);
+      const response = res.data.filter(res=>res.orderStatus==status)
+      console.log(res.data);
+      console.log(response);
+
                     setData(res.data);
                     setLoading(false);
                  })
@@ -49,7 +55,17 @@ import { Box } from '@mui/material';
   }
   return (
     <>
-    <RadioButtonsGroup/>
+    <FormControl>
+      <RadioGroup
+        aria-labelledby="demo-radio-buttons-group-label"
+        defaultValue="female"
+        name="radio-buttons-group"
+        row
+      >
+        <FormControlLabel  value="سفارش های تحویل شده" onClick={()=>setstatus(1)} control={<Radio />} label="سفارش های تحویل شده" />
+        <FormControlLabel value="سفارش های در انتظار ارسال" onClick={()=>setstatus(3)} control={<Radio />} label="سفارش های در انتظار ارسال" />
+      </RadioGroup>
+    </FormControl>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -67,7 +83,7 @@ import { Box } from '@mui/material';
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row" align="right">
-                {row.customerDetail.firstName} {row.customerDetail.lastName}
+                {row.customerDetail.firstname} {row.customerDetail.lastname}
               </TableCell>
               <TableCell align="right">{row.purchaseTotal}</TableCell>
               <TableCell align="right">{row.orderDate}</TableCell>

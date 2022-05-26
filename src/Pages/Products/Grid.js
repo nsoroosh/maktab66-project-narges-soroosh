@@ -8,6 +8,7 @@ import ActionAreaCard from '../Home/Card';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import FullWidthGrid from '../../Lyouts/Sidebar'
+import TemporaryDrawer from './categoryList';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -19,7 +20,6 @@ const Item = styled(Paper)(({ theme }) => ({
 function RowAndColumnSpacing() {
   let params = useParams();
   const [data, setData] = useState([]);
-  const navigate = useNavigate()
   const [isLoading, setLoading] = useState(true);
   async function productdata(input) {
     try {
@@ -48,14 +48,15 @@ function RowAndColumnSpacing() {
   
   return (
     <Box sx={{ width: '100%' }}>
+      <TemporaryDrawer/>
+
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       {data.map((result) => (
-         <Grid item xs={12} sm={6} md={6}>
+        <Grid item xs={12} sm={4} md={4}>
          <ActionAreaCard
           name={result.name}
           price={result.price}
           image={result.image}
-          onclick={()=> navigate(`/product/${result.name}`)}
           
           />
            
