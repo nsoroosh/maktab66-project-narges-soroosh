@@ -11,7 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import TablePagination from '@mui/material/TablePagination';
+import Pagination from '@mui/material/Pagination';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -24,14 +24,10 @@ import { Box } from '@mui/material';
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 const [status, setstatus] = useState()
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+const handleChange = (event, value) => {
+  setPage(value);
+};
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
    function productdata(page,items){
     axios.get(`http://localhost:3002/orders?_page=${page}&_limit=${items}`)
     .then(res => { 
@@ -99,16 +95,8 @@ const [status, setstatus] = useState()
     </TableContainer>
     <Box>
     
-    <TablePagination
-        component="div"
-        count={50}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        dir="ltr"
-      />
+    <Pagination count={10} page={page} dir="ltr" defaultPage={1} onChange={handleChange} />
+    
     </Box>
     </>
   );

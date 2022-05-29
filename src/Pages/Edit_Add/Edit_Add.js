@@ -10,7 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TablePagination from "@mui/material/TablePagination";
+import Pagination from "@mui/material/Pagination";
 import BasicModal from "./AddModal";
 import { Box } from "@mui/material";
 import { useSelector, useDispatch } from 'react-redux'
@@ -25,13 +25,8 @@ function Edit_Add() {
   const dispatch = useDispatch()
   // const [subcategory, setsubcategory] = useState();
   const subcategory = useSelector(state => state.subcategorydata.value)
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleChange = (event, value) => {
+    setPage(value);
   };
   function productdata(page, items) {
     axios
@@ -47,8 +42,8 @@ function Edit_Add() {
   function deleteitem(input){
     axios
       .delete(`http://localhost:3002/products/${input}`)
-      .then((res) => {
-        console.log(res)
+      .then(() => {
+        productdata(page, rowsPerPage);
       })
       .catch((err) => {
         console.log(err);
@@ -102,7 +97,7 @@ function Edit_Add() {
                   {subcategory[row.subcategory]}
                 </TableCell>
                 <TableCell align="right">
-                  <button onClick={()=>dispatch(edititem(row.id))}  ><EditModal /></button>
+                  <button onClick={()=>dispatch(edititem(row.id))}  ><EditModal   /></button>
                   <button onClick={()=>deleteitem(row.id)} style={{padding:"10px"}}>حذف</button>
                 </TableCell>
               </TableRow>
@@ -113,16 +108,7 @@ function Edit_Add() {
 
       <Box>
     
-    <TablePagination
-        component="div"
-        count={50}
-        page={page}
-        onPageChange={handleChangePage}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        dir="ltr"
-      />
+      <Pagination count={10} page={page} dir="ltr" defaultPage={1} onChange={handleChange} />
     </Box>
     </>
   );

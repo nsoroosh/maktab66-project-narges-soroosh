@@ -92,7 +92,9 @@ const ResponsiveAppBar = () => {
             <Outlet />
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Link to={"/"} >
             <img src={logo} alt="Logo" width="50" height="50" />
+            </Link>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button

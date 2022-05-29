@@ -41,6 +41,7 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
+        <h3>دیجیتال ارت</h3>
         {subcategory.map((text, index) => (
           <ListItem key={text} disablePadding>
             <Link to={`/products/${index + 1}`}>
@@ -53,45 +54,47 @@ export default function TemporaryDrawer() {
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        <h3>نقاشی</h3>
+        {subcategory.map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
+            <Link to={`/products/${index + 1}`}>
+              <ListItemButton>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>
       <Divider />
 
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        <h3>عکس</h3>
+        {subcategory.map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
+            <Link to={`/products/${index + 1}`}>
+              <ListItemButton>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>
       <Divider />
 
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
+        <h3>تایپوگرافی</h3>
+        {subcategory.map((text, index) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
+            <Link to={`/products/${index + 1}`}>
+              <ListItemButton>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </Link>
           </ListItem>
         ))}
       </List>
+      <Outlet/>
+
     </Box>
   );
 
@@ -109,7 +112,6 @@ export default function TemporaryDrawer() {
           {list("right")}
         </Drawer>
       </React.Fragment>
-      <Outlet/>
     </div>
   );
 }

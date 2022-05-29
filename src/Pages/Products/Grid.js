@@ -8,6 +8,7 @@ import ActionAreaCard from '../Home/Card';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import FullWidthGrid from '../../Lyouts/Sidebar'
+import { Pagination } from '@mui/material';
 import TemporaryDrawer from './categoryList';
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -21,6 +22,7 @@ function RowAndColumnSpacing() {
   let params = useParams();
   const [data, setData] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [page, setPage] = useState()
   async function productdata(input) {
     try {
       const response = await axios
@@ -36,7 +38,9 @@ function RowAndColumnSpacing() {
       console.log(error);
     }
   }
-
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
   useEffect(() => {
     productdata(params.productcatagory);
   }, []);
@@ -49,8 +53,8 @@ function RowAndColumnSpacing() {
   return (
     <Box sx={{ width: '100%' }}>
       <TemporaryDrawer/>
-
-      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+      
+      <Grid container rowSpacing={2} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
       {data.map((result) => (
         <Grid item xs={12} sm={4} md={4}>
          <ActionAreaCard
@@ -65,6 +69,8 @@ function RowAndColumnSpacing() {
        
         
       </Grid>
+      <Pagination count={10} page={page} dir="ltr"  onChange={handleChange} />
+
       <Outlet/>
     </Box>
   );

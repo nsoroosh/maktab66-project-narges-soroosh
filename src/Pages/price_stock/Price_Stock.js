@@ -10,25 +10,19 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TablePagination from "@mui/material/TablePagination";
+import Pagination from "@mui/material/Pagination";
 import { Box } from "@mui/material";
-import Editmode from "./editmode";
-import { useSelector } from "react-redux";
+import PriceEditmode from "./priceEditmode";
+import CountEditmode from "./countEditmode";
 function Price_Stock() {
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const stockedititem = useSelector((state) => state.stockedititem.value);
-  const newstockvalue = useSelector((state) => state.newstockvalue.value);
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const [editdata, seteditdata] = useState();
+  const [editId, seteditId] = useState()
+  const handleChange = (event, value) => {
+    setPage(value);
   };
   function productdata(page, items) {
     axios
@@ -42,9 +36,9 @@ function Price_Stock() {
         console.log(err);
       });
   }
-  function editTask(id, newdata) {
+  function editTask(id,data) {
     axios
-      .put(`http://localhost:3002/products/${id}`, newdata)
+      .put(`http://localhost:3002/products/${id}`, data)
       .then((res) => {
         console.log(res);
         // setstockeditmode(false);
@@ -53,6 +47,17 @@ function Price_Stock() {
         console.log(err);
       });
   }
+
+  const changeprice = (input) => {
+    seteditdata({
+      price: input,
+    });
+  };
+  const changecount = (input) => {
+    seteditdata({
+      count: input,
+    });
+  };
   useEffect(() => {
     productdata(page, rowsPerPage);
   }, [page, rowsPerPage]);
@@ -67,7 +72,7 @@ function Price_Stock() {
         <button
           style={{ height: "50px", margin: "20px" }}
           onClick={() => {
-            editTask(stockedititem, newstockvalue);
+            // editTask();
           }}
         >
           ذخیره
@@ -91,23 +96,55 @@ function Price_Stock() {
                 <TableCell component="th" scope="row" align="right">
                   {row.name}
                 </TableCell>
-                <TableCell align="right">{row.price}</TableCell>
-                <Editmode stock={row.count} id={row.id} editTask={editTask} />
+                <TableCell component="th" scope="row" align="right">
+                  <PriceEditmode
+                    value={row.price}
+                    onClick={() =>
+                      seteditdata({
+                        image: row.image,
+                        name: row.name,
+                        artist: row.artist,
+                        price: row.price,
+                        count: row.count,
+                        description: row.description,
+                        subcategory: row.subcategory,
+                      })
+                    }
+                    changeprice={editTask}
+                    id={row.id}
+                  />
+                </TableCell>
+                <TableCell component="th" scope="row" align="right">
+                  <CountEditmode
+                    value={row.count}
+                    data={
+                      {
+                        image: row.image,
+                        name: row.name,
+                        artist: row.artist,
+                        price: row.price,
+                        count: row.count,
+                        description: row.description,
+                        subcategory: row.subcategory,
+                      }
+                    }
+                    
+                    changecount={editTask}
+                    id={row.id}
+                  />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       <Box>
-        <TablePagination
-          component="div"
-          count={50}
+        <Pagination
+          count={10}
           page={page}
-          onPageChange={handleChangePage}
-          rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
           dir="ltr"
+          defaultPage={1}
+          onChange={handleChange}
         />
       </Box>
     </>
