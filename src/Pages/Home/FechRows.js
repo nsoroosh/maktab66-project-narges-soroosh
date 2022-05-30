@@ -25,7 +25,7 @@ export default function FechRows(props) {
   useEffect(() => {
     productdata(props.item);
   }, []);
-  console.log(data);
+  // console.log(data);
   if (isLoading) {
     return <div className="App">Loading...</div>;
   }

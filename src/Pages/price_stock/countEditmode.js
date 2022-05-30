@@ -3,11 +3,17 @@ import EasyEdit from 'react-easy-edit';
 export default function CountEditmode(props) {
     const [data, setdata] = useState(props.data)
     const save = (value) => {
-      setdata({
-        count:value
-      }
-      )
-      props.changecount(props.id,data)
+      let newdata = {};
+    newdata = {
+      price: data.price,
+      image: data.image,
+      name: data.name,
+      artist: data.artist,
+      count: value,
+      description: data.description,
+      subcategory: data.subcategory,
+    };
+      props.changecount(props.id,newdata)
     }
   
 

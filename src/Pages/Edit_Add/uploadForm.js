@@ -27,7 +27,7 @@ export default function UploadForm() {
   const [image, setimage] = useState([]);
   const [imgData, setImgData] = useState(null);
   const [data, setdata] = useState({
-    "image": `/files/${image}`,
+    "image": "",
     "name":'',
     "artist": '',
     "price": '',
@@ -35,7 +35,6 @@ export default function UploadForm() {
     "description": '',
     "subcategory": '',
   })
-  const id = useSelector((state) => state.edititem.value);
 
 
   const handleChangefile = (event) => {
@@ -56,6 +55,9 @@ export default function UploadForm() {
       }).then((response) => {
         const datarespose = response.data.filename;
         setimage(datarespose);
+        setdata({
+          "image":`/files/${datarespose}`
+        })
         // setpreviewimage(URL.createObjectURL(datarespose))
       });
     } catch (error) {
@@ -64,30 +66,11 @@ export default function UploadForm() {
   };
 
 
-  const getdata = (id) => {
-    try {
-      const response = axios({
-        method: "get",
-        url: `http://localhost:3002/products/${id}`,
-      }).then((response) => {
-        console.log(response.data);
-       setdata({
-        "name":response.data.name,
-        "artist": response.data.artist,
-        "price": response.data.price,
-        "count": response.data.count,
-        "description": response.data.description,
-        "subcategory": response.data.subcategory,
-      })
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-console.log(image);
+  
+console.log(data);
   const formik = useFormik({
     initialValues: {
-      image: `/files/${image}`,
+      image: data.image,
       name:data.name,
       artist: data.artist,
       price: data.price,
@@ -95,13 +78,14 @@ console.log(image);
       description: data.description,
       subcategory: data.subcategory,
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: (values) => {
+      // alert(JSON.stringify({...values,"image":`/files/${image}`}));
       try {
          axios({
           method: "post",
           url: "http://localhost:3002/products",
-          data: values,
+          data: (JSON.stringify({...values,"image":`/files/${image}`})),
           headers: { "Content-Type": 'application/json'},
         }).then(res=>console.log(res))
       } catch (error) {
@@ -109,27 +93,29 @@ console.log(image);
       }
     },
   });
-  useEffect(() => {
-    getdata(id);
-  }, []);
+  
 
 return (
  <div>
   <form onSubmit={formik.handleSubmit}>
     <input type="file" onChange={handleChangefile} name={"image"} />
     <img src={imgData} width="60px" />
+    
     <TextField
         fullWidth
-        id="name"
+        dir="ltr"
+          sx={{ margin: "1rem 0" }}
         name="name"
+        id="name"
         label="نام"
-        value={formik.values.name}
         onChange={formik.handleChange}
         error={formik.touched.email && Boolean(formik.errors.email)}
         helperText={formik.touched.email && formik.errors.email}
       />
       <TextField
         fullWidth
+        dir="ltr"
+          sx={{ margin: "1rem 0" }}
         id="price"
         name="price"
         label="قیمت"
@@ -140,6 +126,8 @@ return (
       />
       <TextField
         fullWidth
+        dir="ltr"
+          sx={{ margin: "1rem 0" }}
         id="artist"
         name="artist"
         label="هنرمند"
@@ -151,6 +139,8 @@ return (
       <TextField
         label="تعداد"
         fullWidth
+        dir="ltr"
+          sx={{ margin: "1rem 0" }}
         id="count"
         name="count"
         value={formik.values.count}
@@ -162,6 +152,8 @@ return (
       <InputLabel id="demo-simple-select-label">دسته بندی</InputLabel>
       <Select
        fullWidth
+       dir="ltr"
+          sx={{ margin: "1rem 0" }}
        id="subcategory"
        name="subcategory"
        value={formik.values.subcategory}
@@ -179,6 +171,8 @@ return (
     <TextField
         label="توضیحات"
         fullWidth
+        dir="ltr"
+          sx={{ margin: "1rem 0" }}
         id="description"
         name="description"
         value={formik.values.description}
@@ -193,3 +187,62 @@ return (
   </div>
 );
 }
+
+
+
+// const validationSchema = yup.object({
+//   email: yup
+//     .string('Enter your email')
+//     .email('Enter a valid email')
+//     .required('Email is required'),
+//   password: yup
+//     .string('Enter your password')
+//     .min(8, 'Password should be of minimum 8 characters length')
+//     .required('Password is required'),
+// });
+
+// export default function UploadForm ()  {
+//   const formik = useFormik({
+//     initialValues: {
+//       email: 'foobar@example.com',
+//       password: 'foobar',
+//     },
+//     validationSchema: validationSchema,
+//     onSubmit: (values) => {
+//       alert(JSON.stringify(values, null, 2));
+//     },
+//   });
+
+//   return (
+//     <div>
+//       <form onSubmit={formik.handleSubmit}>
+//         <TextField
+//           fullWidth
+//           id="email"
+//           name="email"
+//           label="Email"
+//           value={formik.values.email}
+//           onChange={formik.handleChange}
+//           error={formik.touched.email && Boolean(formik.errors.email)}
+//           helperText={formik.touched.email && formik.errors.email}
+//         />
+//         <TextField
+//           fullWidth
+//           id="password"
+//           name="password"
+//           label="Password"
+//           type="password"
+//           value={formik.values.password}
+//           onChange={formik.handleChange}
+//           error={formik.touched.password && Boolean(formik.errors.password)}
+//           helperText={formik.touched.password && formik.errors.password}
+//         />
+//         <Button color="primary" variant="contained" fullWidth type="submit">
+//           Submit
+//         </Button>
+//       </form>
+//     </div>
+//   );
+// };
+
+        // {...formik.getFieldProps('name')}

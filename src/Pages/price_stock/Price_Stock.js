@@ -99,8 +99,8 @@ function Price_Stock() {
                 <TableCell component="th" scope="row" align="right">
                   <PriceEditmode
                     value={row.price}
-                    onClick={() =>
-                      seteditdata({
+                    data={
+                      {
                         image: row.image,
                         name: row.name,
                         artist: row.artist,
@@ -108,8 +108,7 @@ function Price_Stock() {
                         count: row.count,
                         description: row.description,
                         subcategory: row.subcategory,
-                      })
-                    }
+                      }}
                     changeprice={editTask}
                     id={row.id}
                   />

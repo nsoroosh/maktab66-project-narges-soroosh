@@ -17,6 +17,7 @@
     "bourbon": "^7.2.0",
     "formik": "^2.2.9",
     "jalali-react-datepicker": "^1.2.1",
+    "mr-jalali-react-datepicker": "^1.2.5",
     "react": "^18.1.0",
     "react-awesome-slider": "^4.1.0",
     "react-dom": "^18.1.0",
