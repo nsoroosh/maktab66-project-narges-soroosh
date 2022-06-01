@@ -26,7 +26,13 @@ function Price_Stock() {
   };
   function productdata(page, items) {
     axios
-      .get(`http://localhost:3002/products?_page=${page}&_limit=${items}`)
+      .get(`http://localhost:3002/products`, {params:{
+        _page:`${page}`,
+        _limit:`${items}`,
+        _sort:"createdAt",
+        _order:"desc",
+        // orderStatus:`${status}`
+      }})
       .then((res) => {
         // console.log(res.data);
         setData(res.data);

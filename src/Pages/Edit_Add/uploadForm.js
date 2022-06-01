@@ -108,6 +108,7 @@ return (
         name="name"
         id="name"
         label="نام"
+        value={formik.values.name}
         onChange={formik.handleChange}
         error={formik.touched.email && Boolean(formik.errors.email)}
         helperText={formik.touched.email && formik.errors.email}

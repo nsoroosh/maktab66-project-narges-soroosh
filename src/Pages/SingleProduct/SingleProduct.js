@@ -13,6 +13,7 @@ import { Box, margin } from "@mui/system";
 function SingleProduct() {
   let params = useParams();
   const [data, setData] = useState([]);
+  // const [carditems, setcarditems] = useState([])
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(true);
   const subcategory = useSelector((state) => state.subcategorydata.value);
@@ -37,9 +38,14 @@ const [count, setcount] = useState()
   function finalprice(count,price){
      return count*price
   }
-  const carditems = JSON.parse( localStorage.getItem("carditems"))
-function addtocard(){
+  
+  function addtocard(){
+  let carditems = JSON.parse( localStorage.getItem("carditems"))
+  if(carditems==null){
+     carditems=[]
+  }
   localStorage.setItem("carditems", JSON.stringify([...carditems,{
+    id:`${data[0].id}`,
     name:`${data[0].name}`,
     thumbnail:`${data[0].thumbnail}`,
     price:`${data[0].price}`,
@@ -47,7 +53,7 @@ function addtocard(){
     finalprice:count*data[0].price
   }]))
 }
-console.log(carditems);
+// console.log(carditems);
   useEffect(() => {
     productdata(params.productId);
   }, []);

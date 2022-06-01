@@ -15,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { replace } from "formik";
 const Card = () => {
   const navigate = useNavigate()
-  const data = JSON.parse(localStorage.getItem("carditems"));
+  const [data, setdata] = useState()
+  
   // const totalprice = data.map(res=>{
   //   const total = 0
   //   total+=res.finalprice
@@ -25,10 +26,19 @@ const Card = () => {
     navigate("/customerinfo")
   }
   // function deleteitem(input){
-  // const result=  data.filter(res=>res.name!=input)
+  // let index=  carditems.indexOf(res=>res.id==input)
+  // let  result=carditems.splice(index,1)
   //   localStorage.setItem('carditems',result)
   // }
-  if (!data) {
+  const carditems = JSON.parse( localStorage.getItem("carditems"))
+  useEffect(() => {
+
+  // setdata(carditems)
+    
+  }, [])
+  
+  
+  if (!carditems) {
     return <Typography variant="h3" component="h2" sx={{margin:"9rem "}}>سبد خرید شما خالی است!</Typography>;
   }
   return (
@@ -50,7 +60,7 @@ const Card = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
+            {carditems.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -75,10 +85,10 @@ const Card = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Typography component="h5" variant="h5" onClick={()=>redirect()}>
+      <Typography component="h5" variant="h5" >
         مجموع مبلغ :
       </Typography>
-      <Button variant="contained">نهایی کردن سبد خرید</Button>
+      <Button variant="contained" onClick={()=>redirect()}>نهایی کردن سبد خرید</Button>
     </>
   );
 };

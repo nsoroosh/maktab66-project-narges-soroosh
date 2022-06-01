@@ -5,6 +5,13 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { useDispatch } from 'react-redux';
+import { edititem } from '../../redux/reducers/Edititem';
+import { useNavigate } from 'react-router-dom';
+import AdapterJalali from '@date-io/date-fns-jalali';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 // import { DatePicker } from 'mr-jalali-react-datepicker';
 
 const validationSchema = yup.object({
@@ -19,67 +26,93 @@ const validationSchema = yup.object({
 });
 
 const CustomerInfo = () => {
+  const dispatch  = useDispatch()
+  const navigate = useNavigate()
+  const [value, setValue] = React.useState(new Date());
+  
   const formik = useFormik({
     initialValues: {
-      email: 'foobar@example.com',
-      password: 'foobar',
+      firstname: '',
+      lastname: '',
+      phone:'',
+      address:"",
+      date:`${value}`
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+      // alert(JSON.stringify(values, null, 2));
+      dispatch(edititem((values)))
+   navigate('/payment')
     },
   });
 
   return (
     <div>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} style={{padding:"3rem"}}>
         <TextField
-          fullWidth
+        sx={{width:"50%"}}
+       dir="ltr"
+
           id="firstname"
           name="firstname"
           label="نام"
           type="text"
-          value={formik.values.email}
+          value={formik.values.firstname}
           onChange={formik.handleChange}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
         />
         <TextField
-          fullWidth
+        sx={{width:"50%"}}
+        dir="ltr"
+
           id="lastname"
           name="lastname"
           label="نام خانوادگی"
           type="text"
-          value={formik.values.password}
+          value={formik.values.lastname}
           onChange={formik.handleChange}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
         <TextField
-          fullWidth
+        sx={{width:"50%"}}
+        dir="ltr"
+
           id="phone"
           name="phone"
           label="شماره همراه"
           type="text"
-          value={formik.values.password}
+          value={formik.values.phone}
           onChange={formik.handleChange}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
         <TextField
-          fullWidth
+        sx={{width:"50%"}}
+        dir="ltr"
+
           id="address"
           name="address"
           label="ادرس"
           type="text"
-          value={formik.values.password}
+          value={formik.values.address}
           onChange={formik.handleChange}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
-        {/* <DatePicker label="تاریخ"  stream/> */}
-        <Button color="primary" variant="contained" fullWidth type="submit">
-          Submit
+        <LocalizationProvider dateAdapter={AdapterJalali}>
+      <DatePicker
+          label='تاریخ تحویل'
+
+        mask="____/__/__"
+        value={value}
+        onChange={(newValue) => setValue(newValue)}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </LocalizationProvider>
+        <Button color="primary" variant="contained"  type="submit" >
+        پرداخت
         </Button>
       </form>
     </div>

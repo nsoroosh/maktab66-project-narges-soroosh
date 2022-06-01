@@ -24,10 +24,8 @@ function App() {
         <Route index element={<Home />} />
         <Route path="card" element={<Card />} />
         <Route path="customerinfo" element={<CustomerInfo />} />
-        <Route path="Payment" element={<Payment />} >
-
-        <Route path=":Resultpayment" element={<ResultPament />} />
-        </Route>
+        <Route path="payment" element={<Payment />} />
+        <Route path="payment/:Resultpayment" element={<ResultPament />} />
         <Route path="products/:productcatagory" element={<Products />} />
         <Route path="product/:productId" element={<SingleProduct />} />
         <Route path="login" element={

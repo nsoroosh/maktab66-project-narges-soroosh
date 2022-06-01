@@ -106,6 +106,7 @@ export default function UploadForm() {
       } catch (error) {
         console.log(error);
       }
+      
     },
   });
   useEffect(() => {
