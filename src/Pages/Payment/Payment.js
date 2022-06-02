@@ -1,104 +1,96 @@
-import { Button, Typography } from '@mui/material'
-import axios from 'axios'
-import React , {useEffect , useState} from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import Productpagelyout from '../../Lyouts/ProductPage/Productpagelyout' 
+import { Button, Typography } from "@mui/material";
+import {api} from "../../Utils/axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Productpagelyout from "../../Lyouts/ProductPage/Productpagelyout";
 
-
- function Payment() {
-   const [data, setdata] = useState()
-   const [productdata, setproductdata] = useState( )
-   const navigate = useNavigate()
-   const customerdata = ( useSelector(state=>state.edititem.value))
-   const carditems = JSON.parse( localStorage.getItem("carditems"))
-   function sendCustomerData(){
-      axios.post('http://localhost:3002/orders',(data)).then(
-        res=>{console.log(res)
-          change()
-console.log(productdata);
-          // localStorage.removeItem("carditems")
-        // navigate('/payment/sucsess')
-      }
-      )
-      .catch(res=>{
-        console.log(res)
-        navigate('/payment/failed')
-      }
-        )
-   }
-   function getproductdata() {
-    axios
-      .get(`http://localhost:3002/products`)
+function Payment() {
+  const [data, setdata] = useState();
+  const [productdata, setproductdata] = useState();
+  const navigate = useNavigate();
+  const customerdata = useSelector((state) => state.edititem.value);
+  const carditems = JSON.parse(localStorage.getItem("carditems"));
+  function sendCustomerData() {
+    api
+      .post("/orders", data)
       .then((res) => {
-        // console.log(res.data);
-        setproductdata(res.data);
+        console.log(res);
+        change()
+        localStorage.removeItem("carditems")
+        navigate('/payment/sucsess')
+      })
+      .catch((res) => {
+        console.log(res);
+        navigate("/payment/failed");
+      });
+  }
+  function getproductdata(id, count) {
+    api
+      .get(`/products/${id}`)
+      .then((res) => {
+        console.log(res.data);
+        let changedcount = res.data.count;
+        changedcount -= count;
+        res.data.count = JSON.stringify(changedcount);
+        console.log(res.data);
+        const data = res.data;
+        api
+          .put(`/products/${id}`, data)
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
       });
   }
-  function change(){
-    carditems.forEach(element => {
-      editstock(element.id,element.count)
-    })
-    // axios
-    // .post(`http://localhost:3002/products`.data)
-    // .then((res) => {
-      //   console.log(res);
-      
-      // })
-      // .catch((err) => {
-        //   console.log(err);
-        // });
-      }
-      console.log(productdata);
-   
-   function editstock(id,count){
+function change(){
+  carditems.forEach(element => {
+    getproductdata(element.id,element.quantity)
+  
 
-     productdata.map(res=>{
-       if(res.id==id){
-         res.count = Number(res.count)-count
-       }
-     }
-     )
-   }
-   function timestamp(){
+  })
+}
+  
+  function timestamp() {
     const moonLanding = new Date(`${customerdata.date}`);
-    const timestamp = (moonLanding.getTime());
-    return Math.floor(timestamp/1000)
-   }
-   console.log(data);
+    const timestamp = moonLanding.getTime();
+    return timestamp;
+  }
+  // console.log(data);
 
-   useEffect(() => {
-     getproductdata()
-     const delivery = timestamp()
-      setdata({
-      "customerDetail": customerdata,
-      "orderNumber": `${parseInt(Math.random() * (10000 - 1000) + 1000)}`,
-      "orderDate": `${Math.floor(Date.now()/1000)}`,
-      "purchaseTotal": `${carditems.purchaseTotal}`,
-      "orderStatus": "2",
-      "delivery":`${delivery}`,
-      "deliveredAt": "",
-      "orderItems": carditems,
-     })
-   
-     
-   }, [])
-   
+  useEffect(() => {
+    // change()
+    const delivery = timestamp();
+    setdata({
+      customerDetail: customerdata,
+      orderNumber: `${parseInt(Math.random() * (10000 - 1000) + 1000)}`,
+      orderDate: `${Date.now().getTime()}`,
+      purchaseTotal: `${carditems.purchaseTotal}`,
+      orderStatus: "2",
+      delivery: `${delivery}`,
+      deliveredAt: "",
+      orderItems: carditems,
+    });
+    console.log(productdata);
+  }, []);
+
   return (
     <>
-    <Typography variant='h5' component='h3'>
-      میخواهید پرداخت کنید ؟
-    </Typography>
-    <Button variant="contained"  onClick={sendCustomerData}>
-      بله
-    </Button>
-    <Button variant="contained" onClick={()=>navigate('/payment/failed')} >
-     خیر
-    </Button>
+      <Typography variant="h5" component="h3">
+        میخواهید پرداخت کنید ؟
+      </Typography>
+      <Button variant="contained" onClick={sendCustomerData}>
+        بله
+      </Button>
+      <Button variant="contained" onClick={() => navigate("/payment/failed")}>
+        خیر
+      </Button>
     </>
-  )
+  );
 }
-export default Productpagelyout(Payment)
+export default Productpagelyout(Payment);

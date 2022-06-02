@@ -1,27 +1,41 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import { api } from "../../Utils/axios";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { MenuItem, Select, InputLabel, FormControl } from "@mui/material";
-
+import changeitem from "../../redux/reducers/changeitem";
 const validationSchema = yup.object({
-  name: yup
-    .string("Enter your email")
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: yup
-    .string("Enter your password")
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
+  // name: yup
+  //   .string("نام محصول را وارد کنید")
+  //   .required("وارد کردن این مورد الزامی است"),
+  //   artist: yup
+  //   .string("نام محصول را وارد کنید")
+  //   .required("وارد کردن این مورد الزامی است"),
+  //   description: yup
+  //   .string("نام محصول را وارد کنید")
+  //   .required("وارد کردن این مورد الزامی است"),
+  //   subcategory: yup
+  //   .required("وارد کردن این مورد الزامی است"),
+  // price: yup
+  //   .number("مبلغ مورد نظر را وارد کنید")
+  //   .required("وارد کردن این مورد الزامی است")
+  //   .positive("مقدار وارد شده صحیح نمی باشد")
+  //   .integer("مقدار وارد شده صحیح نمی باشد"),
+  //   count: yup
+  //   .number("مبلغ مورد نظر را وارد کنید")
+  //   .required("وارد کردن این مورد الزامی است")
+  //   .positive("مقدار وارد شده صحیح نمی باشد")
+  //   .integer("مقدار وارد شده صحیح نمی باشد"),
 });
 
 export default function UploadForm() {
   const [image, setimage] = useState([]);
   const [imgData, setImgData] = useState(null);
+  const dispatch = useDispatch();
   const [data, setdata] = useState({
     image: "",
     name: "",
@@ -43,17 +57,15 @@ export default function UploadForm() {
     const uploadFormData = new FormData();
     uploadFormData.append("image", file);
     try {
-      const response = axios({
+      const response = api({
         method: "post",
-        url: "http://localhost:3002/upload",
+        url: "/upload",
         data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
         const datarespose = response.data.filename;
         setimage(datarespose);
-        setdata({
-          image: `/files/${datarespose}`,
-        });
+        setdata({ ...data, image: `/files/${datarespose}` });
         // setpreviewimage(URL.createObjectURL(datarespose))
       });
     } catch (error) {
@@ -63,11 +75,12 @@ export default function UploadForm() {
 
   const getdata = (id) => {
     try {
-      const response = axios({
+      const response = api({
         method: "get",
-        url: `http://localhost:3002/products/${id}`,
+        url: `/products/${id}`,
       }).then((response) => {
-        console.log(response.data);
+        // setImgData(response.data.image)
+        // console.log(response.data.image);
         setdata({
           image: response.data.image,
           name: response.data.name,
@@ -82,7 +95,7 @@ export default function UploadForm() {
       console.log(error);
     }
   };
-  console.log(data);
+  // console.log(data);
   const formik = useFormik({
     initialValues: {
       image: data.image,
@@ -96,17 +109,20 @@ export default function UploadForm() {
     enableReinitialize: true,
     // validationSchema: validationSchema,
     onSubmit: (values) => {
+      // alert( JSON.stringify(values))
       try {
-        const response = axios({
+        const response = api({
           method: "put",
-          url: `http://localhost:3002/products/${id}`,
-          data: JSON.stringify({ ...values, image: `/files/${image}` }),
+          url: `/products/${id}`,
+          data: JSON.stringify(values),
           headers: { "Content-Type": "application/json" },
-        }).then((res) => console.log(res));
+        }).then((res) => {
+          console.log(res);
+          // dispatch(changeitem(id))
+        });
       } catch (error) {
         console.log(error);
       }
-      
     },
   });
   useEffect(() => {
@@ -116,7 +132,7 @@ export default function UploadForm() {
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
-        <input type="file" onChange={handleChangefile} name={"image"} />
+        <TextField type="file" onChange={handleChangefile} name={"image"} />
         <img src={imgData} width="60px" />
         <TextField
           dir="ltr"
@@ -180,10 +196,10 @@ export default function UploadForm() {
             helperText={formik.touched.email && formik.errors.email}
             label="دسته بندی"
           >
-            <MenuItem value={1}>ابستره</MenuItem>
-            <MenuItem value={2}>گرافیک ارت</MenuItem>
+            <MenuItem value={2}>ابستره</MenuItem>
+            <MenuItem value={4}>گرافیک ارت</MenuItem>
             <MenuItem value={3}>ایلاستریتور</MenuItem>
-            <MenuItem value={4}>سیاه و سفید</MenuItem>
+            <MenuItem value={1}>سیاه و سفید</MenuItem>
           </Select>
         </FormControl>
         <TextField

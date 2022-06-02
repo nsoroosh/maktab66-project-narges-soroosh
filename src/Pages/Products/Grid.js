@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import ActionAreaCard from '../Home/Card';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import {api} from "../../Utils/axios";
 import FullWidthGrid from '../../Lyouts/Sidebar'
 import { Pagination } from '@mui/material';
 import TemporaryDrawer from './categoryList';
@@ -25,13 +25,20 @@ function RowAndColumnSpacing() {
   const [page, setPage] = useState()
   async function productdata(input) {
     try {
-      const response = await axios
-        .get(`http://localhost:3002/products`)
+      const response = await api
+        .get(`/products`, {params:{
+          _page:page,
+          _limit:6,
+          _sort:"createdAt",
+          _order:"desc",
+          subcategory:input
+
+        }})
         .then((res) => {
-          const subcategorydata = res.data.filter(
-            (value) => value.subcategory == input
-          );
-          setData(subcategorydata);
+          // const subcategorydata = res.data.filter(
+          //   (value) => value.subcategory == input
+          // );
+          setData(res.data);
           setLoading(false);
         });
     } catch (error) {
@@ -43,7 +50,7 @@ function RowAndColumnSpacing() {
   };
   useEffect(() => {
     productdata(params.productcatagory);
-  }, []);
+  }, [params.productcatagory]);
   console.log(data);
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -71,7 +78,6 @@ function RowAndColumnSpacing() {
       </Grid>
       <Pagination count={10} page={page} dir="ltr"  onChange={handleChange} />
 
-      <Outlet/>
     </Box>
   );
 }

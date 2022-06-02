@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
-import axios from "axios";
-import { useSelector } from "react-redux";
+import {api} from "../../Utils/axios";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { MenuItem , Select , InputLabel  ,FormControl } from "@mui/material";
 
+import changeitem from "../../redux/reducers/changeitem";
 
 
 
@@ -17,15 +18,13 @@ const validationSchema = yup.object({
     .string('Enter your email')
     .email('Enter a valid email')
     .required('Email is required'),
-  password: yup
-    .string('Enter your password')
-    .min(8, 'Password should be of minimum 8 characters length')
-    .required('Password is required'),
+  
 });
 
 export default function UploadForm() {
   const [image, setimage] = useState([]);
   const [imgData, setImgData] = useState(null);
+  const dispatch = useDispatch()
   const [data, setdata] = useState({
     "image": "",
     "name":'',
@@ -47,9 +46,9 @@ export default function UploadForm() {
     const uploadFormData = new FormData();
     uploadFormData.append("image", file);
     try {
-      const response = axios({
+      const response = api({
         method: "post",
-        url: "http://localhost:3002/upload",
+        url: "/upload",
         data: uploadFormData,
         headers: { "Content-Type": "multipart/form-data" },
       }).then((response) => {
@@ -67,7 +66,7 @@ export default function UploadForm() {
 
 
   
-console.log(data);
+// console.log(data);
   const formik = useFormik({
     initialValues: {
       image: data.image,
@@ -82,12 +81,16 @@ console.log(data);
     onSubmit: (values) => {
       // alert(JSON.stringify({...values,"image":`/files/${image}`}));
       try {
-         axios({
+         api({
           method: "post",
-          url: "http://localhost:3002/products",
+          url: "/products",
           data: (JSON.stringify({...values,"image":`/files/${image}`})),
           headers: { "Content-Type": 'application/json'},
-        }).then(res=>console.log(res))
+        }).then(res=>{
+          console.log(res);
+          dispatch(changeitem(data.name))
+
+        })
       } catch (error) {
         console.log(error);
       }

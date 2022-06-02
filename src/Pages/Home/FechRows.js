@@ -1,14 +1,14 @@
 import React , {useEffect , useState} from "react";
 import ActionAreaCard from "./Card";
-import axios from "axios";
+import {api} from "../../Utils/axios";
 import { useNavigate } from "react-router-dom";
 export default function FechRows(props) {
   const [data, setData] = useState([ ]);
   const [isLoading, setLoading] = useState(true);
   async function productdata(input) {
     try {
-      const response = await axios
-        .get(`http://localhost:3002/products`)
+      const response = await api
+        .get(`/products`)
         .then((res) => {
           const subcategorydata = res.data.filter(
             (value) => value.subcategory == input

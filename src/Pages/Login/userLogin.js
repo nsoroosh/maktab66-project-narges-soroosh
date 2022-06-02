@@ -1,8 +1,8 @@
 import React from 'react'
-import axios from 'axios'
+import {api} from "../../Utils/axios";
 async function userLogin(username,password) {
   
-    return axios.post('http://localhost:3002/auth/login', {
+    return api.post('/auth/login', {
       username:username,
       password:password
     })

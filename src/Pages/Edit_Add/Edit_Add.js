@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import {api} from "../../Utils/axios";
 import Pagination from "@mui/material/Pagination";
 import BasicModal from "./AddModal";
 import { Box } from "@mui/material";
@@ -23,14 +23,16 @@ function Edit_Add() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const dispatch = useDispatch()
+  const itemchange=useSelector(state=>state.changeitem.value)
   // const [subcategory, setsubcategory] = useState();
   const subcategory = useSelector(state => state.subcategorydata.value)
   const handleChange = (event, value) => {
     setPage(value);
   };
+  console.log(itemchange);
   function productdata(page, items) {
-    axios
-      .get(`http://localhost:3002/products`, {params:{
+    api
+      .get(`/products`, {params:{
         _page:`${page}`,
         _limit:`${items}`,
         _sort:"createdAt",
@@ -46,8 +48,8 @@ function Edit_Add() {
       });
   }
   function deleteitem(input){
-    axios
-      .delete(`http://localhost:3002/products/${input}`)
+    api
+      .delete(`/products/${input}`)
       .then(() => {
         productdata(page, rowsPerPage);
       })
@@ -60,7 +62,7 @@ function Edit_Add() {
   useEffect(() => {
     productdata(page, rowsPerPage);
     
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage,itemchange]);
   // console.log(subcategory);
   if (isLoading) {
     return <div className="App">Loading...</div>;

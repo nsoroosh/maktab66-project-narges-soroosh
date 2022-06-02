@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import axios from "axios";
+import {api} from "../../Utils/axios";
 import FechRows from "../Home/FechRows";
 import { Box, margin } from "@mui/system";
 function SingleProduct() {
@@ -21,8 +21,8 @@ function SingleProduct() {
 const [count, setcount] = useState()
   async function productdata(input) {
     try {
-      const response = await axios
-        .get(`http://localhost:3002/products`)
+      const response = await api
+        .get(`/products`)
         .then((res) => {
           const productdata = res.data.filter((value) => value.name == input);
           setData(productdata);
@@ -35,9 +35,7 @@ const [count, setcount] = useState()
   function handlechangenumber(event){
       setcount(event.target.value)
   }
-  function finalprice(count,price){
-     return count*price
-  }
+  
   
   function addtocard(){
   let carditems = JSON.parse( localStorage.getItem("carditems"))
@@ -50,13 +48,12 @@ const [count, setcount] = useState()
     thumbnail:`${data[0].thumbnail}`,
     price:`${data[0].price}`,
     quantity:count,
-    finalprice:count*data[0].price
   }]))
 }
 // console.log(carditems);
   useEffect(() => {
     productdata(params.productId);
-  }, []);
+  }, [params.productId]);
   // console.log(data[0]);
   if (isLoading) {
     return <div className="App">Loading...</div>;

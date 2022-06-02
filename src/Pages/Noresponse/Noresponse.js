@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Noresponse() {
   return (
-    <div>Noresponse</div>
+    <div>صفحه ی مورد نظر یافت نشد</div>
   )
 }

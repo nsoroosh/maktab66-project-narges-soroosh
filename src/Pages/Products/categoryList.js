@@ -101,7 +101,7 @@ export default function TemporaryDrawer() {
   return (
     <div>
       <React.Fragment key={"right"}>
-        <Button onClick={toggleDrawer("right", true)}>
+        <Button variant="contained" sx={{margin:"1rem"}} onClick={toggleDrawer("right", true)}>
           {"لیست گروه محصولات"}
         </Button>
         <Drawer

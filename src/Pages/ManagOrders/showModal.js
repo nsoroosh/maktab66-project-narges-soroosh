@@ -109,7 +109,7 @@ export default function BasicModal(props) {
       </Table>
     </TableContainer>
     <Container sx={{margin:"1rem "}} align="center">
-    {props.status==1?<span>زمان تحویل{props.deliveredAt}</span>:<Button variant="contained" onClick={()=>props.setdeliverytime}>تحویل شد</Button>}
+    {props.status==1?<span>زمان تحویل{props.deliveredAt}</span>:<Button variant="contained" onClick={props.setdeliverytime}>تحویل شد</Button>}
     </Container>
         </Box>
       </Modal>

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const ServerData = createSlice({
   name: 'subcategorydata',
   initialState: {
-    value: ["ابستره" ,"گرافیک ارت","ایلاستریتور","سیاه و سفید "]
+    value: ["سیاه و سفید ","ابستره" ,"ایلاستریتور","گرافیک ارت"]
   },
   reducers: {
     getdata:(state,action)=>{

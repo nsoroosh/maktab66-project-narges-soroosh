@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import {api} from "../../Utils/axios";
 import Pagination from "@mui/material/Pagination";
 import { Box } from "@mui/material";
 import PriceEditmode from "./priceEditmode";
@@ -25,8 +25,8 @@ function Price_Stock() {
     setPage(value);
   };
   function productdata(page, items) {
-    axios
-      .get(`http://localhost:3002/products`, {params:{
+    api
+      .get(`/products`, {params:{
         _page:`${page}`,
         _limit:`${items}`,
         _sort:"createdAt",
@@ -43,8 +43,8 @@ function Price_Stock() {
       });
   }
   function editTask(id,data) {
-    axios
-      .put(`http://localhost:3002/products/${id}`, data)
+    api
+      .put(`/products/${id}`, data)
       .then((res) => {
         console.log(res);
         // setstockeditmode(false);

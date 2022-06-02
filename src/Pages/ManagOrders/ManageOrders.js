@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import {api} from "../../Utils/axios";
 import Pagination from "@mui/material/Pagination";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -24,13 +24,15 @@ function ManageOrders() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [status, setstatus] = useState();
+  const [changeitem, setchangeitem] = useState()
+  const access_token = localStorage.getItem("token")
   const handleChange = (event, value) => {
     setPage(value);
   };
 
   function productdata(page, items, status) {
-    axios
-      .get(`http://localhost:3002/orders`, {
+    api
+      .get(`/orders`, {
         params: {
           _page: page,
           _limit: items,
@@ -40,6 +42,7 @@ function ManageOrders() {
         },
       })
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
         setLoading(false);
       })
@@ -49,20 +52,27 @@ function ManageOrders() {
   }
 
   function setdeliverytime(id) {
-    try {
-      const response = axios({
-        method: "patch",
-        url: `http://localhost:3002/orders/${id}`,
-        data: { deliveredAt: new Date() },
-        headers: { "Content-Type": "application/json" },
-      }).then((res) => console.log(res));
-    } catch (error) {
-      console.log(error);
-    }
+  const orderdata=  data.find(res=>res.id==id)
+      let  timestamp=new Date().getTime()
+        orderdata.deliveredAt =timestamp
+        orderdata.orderStatus=1
+        const senddata = orderdata;
+        api
+          .put(`/orders/${id}`, senddata)
+          .then((res) => {
+            console.log(res);
+            setchangeitem(res.data.id)
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      
   }
+
   useEffect(() => {
+    // setdeliverytime(17)
     productdata(page, rowsPerPage, status);
-  }, [page, rowsPerPage, status]);
+  }, [page, rowsPerPage, status,changeitem]);
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -77,13 +87,13 @@ function ManageOrders() {
           row
         >
           <FormControlLabel
-            value="سفارش های تحویل شده"
+            value="1"
             onClick={() => setstatus(1)}
             control={<Radio />}
             label="سفارش های تحویل شده"
           />
           <FormControlLabel
-            value="سفارش های در انتظار ارسال"
+            value="2"
             onClick={() => setstatus(2)}
             control={<Radio />}
             label="سفارش های در انتظار ارسال"
@@ -119,13 +129,13 @@ function ManageOrders() {
                         name: `${row.customerDetail.firstname} ${row.customerDetail.lastname}`,
                         address: `${row.customerDetail.address}`,
                         phone: `${row.customerDetail.phone}`,
-                        delivery: new Date(row.delivery).toUTCString(),
+                        delivery: new Date(row.delivery).toLocaleString(),
                         orderDate: `${row.orderDate}`,
                       }}
                       orders={row.orderItems}
                       status={row.orderStatus}
                       deliveredAt={row.deliveredAt}
-                      // setdeliverytime={setdeliverytime(row.id)}
+                      setdeliverytime={()=>setdeliverytime(row.id)}
                     />{" "}
                   </Button>
                 </TableCell>
