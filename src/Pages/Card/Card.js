@@ -19,19 +19,38 @@ import { maxHeight } from "@mui/system";
 const Card = () => {
   const navigate = useNavigate();
   const [data, setdata] = useState();
-  const [totalprice, settotalprice] = useState(0);
+  const [totalprice, settotalprice] = useState();
   const [inputValue, setinputValue] = useState(2);
+  const [productData, setproductData] = useState(1)
   const carditems = JSON.parse(localStorage.getItem("carditems"));
+   function getproductdata() {
+    try {
+      const response =  api
+        .get(`/products`)
+        .then((res) => {
+          console.log(res.data);
+          setproductData(res.data);
+          // setLoading(false);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(totalprice);
   function redirect() {
     navigate("/customerinfo");
   }
   function finalprice(count, price) {
     return count * price;
   }
-  function calctotalprice(input) {
-    for (let index = 0; index < carditems.length; index++) {
-      settotalprice(totalprice + input);
+  function calctotalprice() {
+  let  price=0
+    for (const item of carditems) {
+      finalprice=item.price*item.quantity
+      price=price+finalprice
     }
+    settotalprice(price)
+    localStorage.setItem("totalprice",price)
   }
   function deleteitem(input) {
     let index = carditems.findIndex((res) => res.id == input);
@@ -41,24 +60,38 @@ const Card = () => {
     setdata(carditems);
     console.log(result);
   }
-  function minesbutt() {
-    setinputValue(inputValue - 1);
-  }
-  function addbutt() {
-    setinputValue(inputValue + 1);
-  }
-  function handleChange(input) {
-    let index = carditems.findIndex((res) => res.id == input);
-    carditems[index].quantity = inputValue;
+  function minesbutt(id) {
+    let index = carditems.findIndex((res) => res.id == id);
+    if(carditems[index].quantity>1){
+      
+      carditems[index].quantity -= 1;
+    }
     console.log(carditems);
     localStorage.setItem("carditems", JSON.stringify(carditems));
-    // setdata(carditems)
-  }
-  useEffect(() => {
-    calctotalprice();
-  }, [data]);
+    setdata(carditems[index].quantity)
 
-  if (!carditems || carditems == []) {
+  }
+  function addbutt(id) {
+    let index = carditems.findIndex((res) => res.id == id);
+    if(carditems[index].quantity<=productData[id].count){
+      
+      carditems[index].quantity += 1;
+    }
+    console.log(carditems);
+    localStorage.setItem("carditems", JSON.stringify(carditems));
+    setdata(carditems[index].quantity)
+
+  }
+  
+  useEffect(() => {
+    if(carditems){
+
+      calctotalprice()
+    }
+    getproductdata()
+  }, [data]);
+  console.log(productData);
+  if (!carditems || carditems.length == 0) {
     return (
       <Typography variant="h3" component="h2" sx={{ margin: "9rem " }}>
         سبد خرید شما خالی است!
@@ -99,21 +132,21 @@ const Card = () => {
                 </TableCell>
                 <TableCell align="right">{row.price}</TableCell>
                 <TableCell align="right">
-                  <button variant="contained">
-                  <RemoveIcon
+                  <button variant="contained" sx={{borderRadius:"50%"}}>
+                  <RemoveIcon 
                     onClick={() => minesbutt(row.id)}
                   />
                   </button>
                   
-                  <input
+                  <TextField
                     type="text"
-                    value={inputValue}
-                    style={{ maxWidth: "2rem" , height:'2rem' }}
-                    onChange={handleChange(row.id)}
+                    value={row.quantity}
+                    size='small'
+                    sx={{ maxWidth: "3rem"  }}
                   />
                   <button variant="contained">
 
-                  <AddIcon onClick={addbutt} />
+                  <AddIcon onClick={()=>addbutt(row.id)} />
                   </button>
                 </TableCell>
                 <TableCell align="right">
@@ -128,6 +161,7 @@ const Card = () => {
                   </Button>
                 </TableCell>
               </TableRow>
+              
             ))}
           </TableBody>
         </Table>

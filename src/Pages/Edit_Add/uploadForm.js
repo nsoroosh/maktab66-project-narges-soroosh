@@ -1,40 +1,50 @@
-
 import React, { useState } from "react";
-import {api} from "../../Utils/axios";
-import { useDispatch } from "react-redux";
+import { api } from "../../Utils/axios";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { MenuItem , Select , InputLabel  ,FormControl } from "@mui/material";
-
+import { useFormik } from "formik";
+import * as yup from "yup";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import { MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import changeitem from "../../redux/reducers/changeitem";
-
-
-
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const validationSchema = yup.object({
   name: yup
-    .string('Enter your email')
-    .email('Enter a valid email')
-    .required('Email is required'),
-  
+    .string("نام محصول را وارد کنید")
+    .required("وارد کردن این مورد الزامی است"),
+  artist: yup
+    .string("نام محصول را وارد کنید")
+    .required("وارد کردن این مورد الزامی است"),
+  description: yup
+    .string("نام محصول را وارد کنید")
+    .required("وارد کردن این مورد الزامی است"),
+  subcategory: yup
+  .string("توضیحات  محصول را وارد کنید")
+  .required("وارد کردن این مورد الزامی است"),
+  price: yup
+    .number("مبلغ مورد نظر را وارد کنید")
+    .required("وارد کردن این مورد الزامی است")
+    .positive("مقدار وارد شده صحیح نمی باشد")
+    .integer("مقدار وارد شده صحیح نمی باشد"),
+  count: yup
+    .number("مبلغ مورد نظر را وارد کنید")
+    .required("وارد کردن این مورد الزامی است")
+    .positive("مقدار وارد شده صحیح نمی باشد")
+    .integer("مقدار وارد شده صحیح نمی باشد"),
 });
 
 export default function UploadForm() {
   const [image, setimage] = useState([]);
   const [imgData, setImgData] = useState(null);
-  const dispatch = useDispatch()
-  const [data, setdata] = useState({
-    "image": "",
-    "name":'',
-    "artist": '',
-    "price": '',
-    "count": '',
-    "description": '',
-    "subcategory": '',
-  })
-
+  const dispatch = useDispatch();
+  const [productdata, setproductdata] = useState({
+    image: "",
+   
+    description: "",
+  });
+  const id = useSelector((state) => state.edititem.value);
 
   const handleChangefile = (event) => {
     const file = event.target.files[0];
@@ -54,9 +64,7 @@ export default function UploadForm() {
       }).then((response) => {
         const datarespose = response.data.filename;
         setimage(datarespose);
-        setdata({
-          "image":`/files/${datarespose}`
-        })
+        setproductdata({ ...productdata, image: `/files/${datarespose}` });
         // setpreviewimage(URL.createObjectURL(datarespose))
       });
     } catch (error) {
@@ -64,189 +72,146 @@ export default function UploadForm() {
     }
   };
 
-
-  
-// console.log(data);
+  console.log(productdata);
   const formik = useFormik({
     initialValues: {
-      image: data.image,
-      name:data.name,
-      artist: data.artist,
-      price: data.price,
-      count: data.count,
-      description: data.description,
-      subcategory: data.subcategory,
+      // image: productdata.image,
+      // thumbnail:productdata.image,
+      name: "",
+      artist: "",
+      price: "",
+      count:"",
+      // description: productdata.description,
+      subcategory: "",
     },
+    enableReinitialize: true,
     // validationSchema: validationSchema,
     onSubmit: (values) => {
-      // alert(JSON.stringify({...values,"image":`/files/${image}`}));
-      try {
-         api({
-          method: "post",
-          url: "/products",
-          data: (JSON.stringify({...values,"image":`/files/${image}`})),
-          headers: { "Content-Type": 'application/json'},
-        }).then(res=>{
-          console.log(res);
-          dispatch(changeitem(data.name))
-
-        })
-      } catch (error) {
-        console.log(error);
-      }
+      // alert(JSON.stringify(values))
+      alert( JSON.stringify({...values,image: productdata.image,thumbnail:productdata.image,description: productdata.description}))
+      // try {
+      //   const response = api({
+      //     method: "put",
+      //     url: `/products/${id}`,
+      //     data: JSON.stringify({...values,image: productdata.image,thumbnail:productdata.image,description: productdata.description}),
+      //     headers: { "Content-Type": "application/json" },
+      //   }).then((res) => {
+      //     console.log(res);
+      //   });
+      // } catch (error) {
+      //   console.log(error);
+      // }
     },
   });
-  
-
-return (
- <div>
-  <form onSubmit={formik.handleSubmit}>
-    <input type="file" onChange={handleChangefile} name={"image"} />
-    <img src={imgData} width="60px" />
-    
-    <TextField
-        fullWidth
-        dir="ltr"
+ 
+  return (
+    <div>
+      <form onSubmit={formik.handleSubmit}>
+        <TextField type="file" onChange={handleChangefile} name={"image"} />
+        <img src={imgData} width="60px" />
+        <TextField
+          dir="ltr"
           sx={{ margin: "1rem 0" }}
-        name="name"
-        id="name"
-        label="نام"
-        value={formik.values.name}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-      <TextField
-        fullWidth
-        dir="ltr"
+          fullWidth
+          id="name"
+          name="name"
+          label="نام"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
+        <TextField
+          dir="ltr"
           sx={{ margin: "1rem 0" }}
-        id="price"
-        name="price"
-        label="قیمت"
-        value={formik.values.price}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-      <TextField
-        fullWidth
-        dir="ltr"
+          fullWidth
+          id="price"
+          name="price"
+          label="قیمت"
+          value={formik.values.price}
+          onChange={formik.handleChange}
+          error={formik.touched.price && Boolean(formik.errors.price)}
+          helperText={formik.touched.price && formik.errors.price}
+        />
+        <TextField
+          fullWidth
+          dir="ltr"
           sx={{ margin: "1rem 0" }}
-        id="artist"
-        name="artist"
-        label="هنرمند"
-        value={formik.values.artist}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-      <TextField
-        label="تعداد"
-        fullWidth
-        dir="ltr"
+          id="artist"
+          name="artist"
+          label="هنرمند"
+          value={formik.values.artist}
+          onChange={formik.handleChange}
+          error={formik.touched.artist && Boolean(formik.errors.artist)}
+          helperText={formik.touched.artist && formik.errors.artist}
+        />
+        <TextField
+          label="تعداد"
+          dir="ltr"
           sx={{ margin: "1rem 0" }}
-        id="count"
-        name="count"
-        value={formik.values.count}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-    <FormControl fullWidth>
-      <InputLabel id="demo-simple-select-label">دسته بندی</InputLabel>
-      <Select
-       fullWidth
-       dir="ltr"
+          fullWidth
+          id="count"
+          name="count"
+          value={formik.values.count}
+          onChange={formik.handleChange}
+          error={formik.touched.count && Boolean(formik.errors.count)}
+          helperText={formik.touched.count && formik.errors.count}
+        />
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">دسته بندی</InputLabel>
+          <Select
+            fullWidth
+            dir="ltr"
+            sx={{ margin: "1rem 0" }}
+            id="subcategory"
+            name="subcategory"
+            value={formik.values.subcategory}
+            onChange={formik.handleChange}
+            error={formik.touched.subcategory && Boolean(formik.errors.subcategory)}
+            helperText={formik.touched.subcategory && formik.errors.subcategory}
+            label="دسته بندی"
+          >
+            <MenuItem value={2}>ابستره</MenuItem>
+            <MenuItem value={4}>گرافیک ارت</MenuItem>
+            <MenuItem value={3}>ایلاستریتور</MenuItem>
+            <MenuItem value={1}>سیاه و سفید</MenuItem>
+          </Select>
+        </FormControl>
+        {/* <TextField
+          label="توضیحات"
+          fullWidth
+          dir="ltr"
           sx={{ margin: "1rem 0" }}
-       id="subcategory"
-       name="subcategory"
-       value={formik.values.subcategory}
-       onChange={formik.handleChange}
-       error={formik.touched.email && Boolean(formik.errors.email)}
-       helperText={formik.touched.email && formik.errors.email}
-        label="دسته بندی"
-      >
-        <MenuItem value={1}>ابستره</MenuItem>
-        <MenuItem value={2}>گرافیک ارت</MenuItem>
-        <MenuItem value={3}>ایلاستریتور</MenuItem>
-        <MenuItem value={4}>سیاه و سفید</MenuItem>
-      </Select>
-    </FormControl>
-    <TextField
-        label="توضیحات"
-        fullWidth
-        dir="ltr"
-          sx={{ margin: "1rem 0" }}
-        id="description"
-        name="description"
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-      />
-    <Button color="primary" variant="contained" fullWidth type="submit">
-  افزودن     
-      </Button>
-  </form>
-  </div>
-);
+          id="description"
+          name="description"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
+        /> */}
+          <CKEditor
+                    editor={ ClassicEditor }
+                    data={formik.values.description}
+                    onReady={ editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log( 'Editor is ready to use!', editor );
+                    } }
+                    onChange={ ( event, editor ) => {
+                        const data = editor.getData();
+                        setproductdata({...productdata,description:data})
+                        console.log( { event, editor, data } );
+                    } }
+                    onBlur={ ( event, editor ) => {
+                        console.log( 'Blur.', editor );
+                    } }
+                    onFocus={ ( event, editor ) => {
+                        console.log( 'Focus.', editor );
+                    } }
+                />
+        <Button color="primary" variant="contained" fullWidth type="submit">
+          ویرایش
+        </Button>
+      </form>
+    </div>
+  );
 }
-
-
-
-// const validationSchema = yup.object({
-//   email: yup
-//     .string('Enter your email')
-//     .email('Enter a valid email')
-//     .required('Email is required'),
-//   password: yup
-//     .string('Enter your password')
-//     .min(8, 'Password should be of minimum 8 characters length')
-//     .required('Password is required'),
-// });
-
-// export default function UploadForm ()  {
-//   const formik = useFormik({
-//     initialValues: {
-//       email: 'foobar@example.com',
-//       password: 'foobar',
-//     },
-//     validationSchema: validationSchema,
-//     onSubmit: (values) => {
-//       alert(JSON.stringify(values, null, 2));
-//     },
-//   });
-
-//   return (
-//     <div>
-//       <form onSubmit={formik.handleSubmit}>
-//         <TextField
-//           fullWidth
-//           id="email"
-//           name="email"
-//           label="Email"
-//           value={formik.values.email}
-//           onChange={formik.handleChange}
-//           error={formik.touched.email && Boolean(formik.errors.email)}
-//           helperText={formik.touched.email && formik.errors.email}
-//         />
-//         <TextField
-//           fullWidth
-//           id="password"
-//           name="password"
-//           label="Password"
-//           type="password"
-//           value={formik.values.password}
-//           onChange={formik.handleChange}
-//           error={formik.touched.password && Boolean(formik.errors.password)}
-//           helperText={formik.touched.password && formik.errors.password}
-//         />
-//         <Button color="primary" variant="contained" fullWidth type="submit">
-//           Submit
-//         </Button>
-//       </form>
-//     </div>
-//   );
-// };
-
-        // {...formik.getFieldProps('name')}

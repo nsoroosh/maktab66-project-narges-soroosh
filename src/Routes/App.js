@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-
+import { createTheme, ThemeProvider } from'@mui/material';
+import { Typography } from '@mui/material';
 import { render } from "react-dom";
 import Admin from "../Pages/Admin/Admin";
 import Card from "../Pages/Card/Card";
@@ -16,8 +17,19 @@ import ResultPament from "../Pages/ResultPayment/ResultPament";
 import SingleProduct from "../Pages/SingleProduct/SingleProduct";
 import ProtectedRoute from "./Protected/ProtectedRoute";
 import PrivateRoute from "./Private/privateRoute";
+import { alignProperty } from "@mui/material/styles/cssUtils";
 function App() {
+  const theme = createTheme({
+    typography: {
+      fontFamily: [
+        'Vazirmatn',
+        "sans-serif"
+      ].join(",")
+    },
+    direction: 'rtl'
+  });
   return (
+    <ThemeProvider theme={theme}>
     <div className="App">
       <Routes>
         <Route path="/" element={<App />} />
@@ -52,6 +64,7 @@ function App() {
         <Route path="*" element={<Noresponse />} />
       </Routes>
     </div>
+    </ThemeProvider>
   );
 }
 

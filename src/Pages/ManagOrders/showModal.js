@@ -26,13 +26,18 @@ const style = {
 export default function BasicModal(props) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
 
+    setOpen(false);
+  }
   function createData(name, price, count) {
     return {name, price, count };
   }
   
-  
+  function handleChange(){
+    props.setdeliverytime()
+    setOpen(false)
+  }
 
   return (
     <div>
@@ -109,7 +114,7 @@ export default function BasicModal(props) {
       </Table>
     </TableContainer>
     <Container sx={{margin:"1rem "}} align="center">
-    {props.status==1?<span>زمان تحویل{props.deliveredAt}</span>:<Button variant="contained" onClick={props.setdeliverytime}>تحویل شد</Button>}
+    {props.status==1?<span>زمان تحویل{props.deliveredAt}</span>:<Button variant="contained" onClick={handleChange}>تحویل شد</Button>}
     </Container>
         </Box>
       </Modal>

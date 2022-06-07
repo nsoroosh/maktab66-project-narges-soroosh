@@ -12,11 +12,12 @@ import { useEffect, useState } from "react";
 import {api} from "../../Utils/axios";
 import Pagination from "@mui/material/Pagination";
 import BasicModal from "./AddModal";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useSelector, useDispatch } from 'react-redux'
 import Getcategories from '../../Components/getSubcategory'
 import EditModal from "./EditModal";
 import { edititem } from "../../redux/reducers/Edititem";
+import { CircularProgress } from "@mui/material";
 function Edit_Add() {
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
@@ -65,7 +66,7 @@ function Edit_Add() {
   }, [page, rowsPerPage,itemchange]);
   // console.log(subcategory);
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <CircularProgress />
   }
   return (
     <>
@@ -106,7 +107,9 @@ function Edit_Add() {
                 </TableCell>
                 <TableCell align="right">
                   <button onClick={()=>dispatch(edititem(row.id))}  ><EditModal   /></button>
-                  <button onClick={()=>deleteitem(row.id)} style={{padding:"10px"}}>حذف</button>
+                  <button onClick={()=>deleteitem(row.id)} style={{padding:"10px"}}>
+                    <Typography >حذف</Typography>
+                  </button>
                 </TableCell>
               </TableRow>
             ))}

@@ -2,6 +2,7 @@ import React , {useEffect , useState} from "react";
 import ActionAreaCard from "./Card";
 import {api} from "../../Utils/axios";
 import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
 export default function FechRows(props) {
   const [data, setData] = useState([ ]);
   const [isLoading, setLoading] = useState(true);
@@ -27,7 +28,8 @@ export default function FechRows(props) {
   }, []);
   // console.log(data);
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <CircularProgress />
+
   }
 
 

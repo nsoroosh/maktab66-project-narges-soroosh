@@ -15,9 +15,12 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-
+import { CircularProgress } from "@mui/material";
 import { Box, Button } from "@mui/material";
 import BasicModal from "./showModal";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 function ManageOrders() {
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
@@ -25,6 +28,33 @@ function ManageOrders() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [status, setstatus] = useState();
   const [changeitem, setchangeitem] = useState()
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
   const access_token = localStorage.getItem("token")
   const handleChange = (event, value) => {
     setPage(value);
@@ -61,6 +91,7 @@ function ManageOrders() {
           .put(`/orders/${id}`, senddata)
           .then((res) => {
             console.log(res);
+            handleClick()
             setchangeitem(res.data.id)
           })
           .catch((err) => {
@@ -75,7 +106,8 @@ function ManageOrders() {
   }, [page, rowsPerPage, status,changeitem]);
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <CircularProgress />
+
   }
   return (
     <>
@@ -112,15 +144,17 @@ function ManageOrders() {
           </TableHead>
           <TableBody>
             {data.map((row) => (
+              
               <TableRow
                 key={row.name}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row" align="right">
+                  {console.log(row)}
                   {row.customerDetail.firstname} {row.customerDetail.lastname}
                 </TableCell>
                 <TableCell align="right">{row.purchaseTotal}</TableCell>
-                <TableCell align="right">{row.orderDate}</TableCell>
+                <TableCell align="right"> {new Date(+row.createdAt).toLocaleString("fa")}</TableCell>
                 <TableCell align="right">
                   <Button variant="contained">
                     {" "}
@@ -129,12 +163,12 @@ function ManageOrders() {
                         name: `${row.customerDetail.firstname} ${row.customerDetail.lastname}`,
                         address: `${row.customerDetail.address}`,
                         phone: `${row.customerDetail.phone}`,
-                        delivery: new Date(row.delivery).toLocaleString(),
-                        orderDate: `${row.orderDate}`,
+                        delivery: new Date(+row.delivery).toLocaleString("fa"),
+                        orderDate:new Date(+row.createdAt).toLocaleString("fa"),
                       }}
                       orders={row.orderItems}
                       status={row.orderStatus}
-                      deliveredAt={row.deliveredAt}
+                      deliveredAt={new Date(+row.deliveredAt).toLocaleString("fa")}
                       setdeliverytime={()=>setdeliverytime(row.id)}
                     />{" "}
                   </Button>
@@ -153,8 +187,25 @@ function ManageOrders() {
           onChange={handleChange}
         />
       </Box>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="تاریخ ارسال ثبت شد"
+        action={action}
+      />
     </>
   );
 }
 
 export default Adminpagelyout(ManageOrders);
+
+
+
+
+
+
+
+
+
+// moment(row.delivery).format('LT').format("YYYY MM DD") 

@@ -1,9 +1,11 @@
 @import "bourbon";
-
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
 body {
   background: #eee !important;
+  font-family: 'Vazirmatn', sans-serif!important ;
   a, a:hover, a:focus, a:active {
     text-decoration: none;
+  font-family: 'Vazirmatn', sans-serif;
     
 }
   // position: relative;

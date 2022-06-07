@@ -7,9 +7,15 @@ import { useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import {api} from "../../Utils/axios";
+import { api } from "../../Utils/axios";
 import FechRows from "../Home/FechRows";
+import { CircularProgress } from "@mui/material";
 import { Box, margin } from "@mui/system";
+import Snackbar from "@mui/material/Snackbar";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 function SingleProduct() {
   let params = useParams();
   const [data, setData] = useState([]);
@@ -18,45 +24,81 @@ function SingleProduct() {
   const [isLoading, setLoading] = useState(true);
   const subcategory = useSelector((state) => state.subcategorydata.value);
   const categories = useSelector((state) => state.categories.value);
-const [count, setcount] = useState()
+  const [open, setOpen] = React.useState(false);
+  const [value, setvalue] = useState(1);
+
   async function productdata(input) {
     try {
-      const response = await api
-        .get(`/products`)
-        .then((res) => {
-          const productdata = res.data.filter((value) => value.name == input);
-          setData(productdata);
-          setLoading(false);
-        });
+      const response = await api.get(`/products`).then((res) => {
+        const productdata = res.data.filter((value) => value.name == input);
+        setData(productdata);
+        setLoading(false);
+      });
     } catch (error) {
       console.log(error);
     }
   }
-  function handlechangenumber(event){
-      setcount(event.target.value)
-  }
+
   
-  
-  function addtocard(){
-  let carditems = JSON.parse( localStorage.getItem("carditems"))
-  if(carditems==null){
-     carditems=[]
-  }
-  localStorage.setItem("carditems", JSON.stringify([...carditems,{
-    id:`${data[0].id}`,
-    name:`${data[0].name}`,
-    thumbnail:`${data[0].thumbnail}`,
-    price:`${data[0].price}`,
-    quantity:count,
-  }]))
+  const handleClose = (event, reason) => {
+    // if (reason === 'clickaway') {
+    //   return;
+    // }
+    setOpen(false);
+  };
+  const action = (
+    <React.Fragment>
+      {/* <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button> */}
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
+function minesbutt(){
+if(value>1){
+  setvalue(value-1)
+
 }
-// console.log(carditems);
+}
+function addbutt(){
+  if(value<=data[0].count){
+    setvalue(value+1)
+  }
+}
+  function addtocard() {
+    let carditems = JSON.parse(localStorage.getItem("carditems"));
+    if (carditems == null) {
+      carditems = [];
+    }
+    localStorage.setItem(
+      "carditems",
+      JSON.stringify([
+        ...carditems,
+        {
+          id: `${data[0].id}`,
+          name: `${data[0].name}`,
+          thumbnail: `${data[0].thumbnail}`,
+          price: `${data[0].price}`,
+          quantity: value,
+        },
+      ])
+    );
+    setOpen(true);
+  }
+  // console.log(carditems);
   useEffect(() => {
     productdata(params.productId);
   }, [params.productId]);
   // console.log(data[0]);
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <CircularProgress />;
   }
   return (
     <>
@@ -77,17 +119,26 @@ const [count, setcount] = useState()
               name={data[0].name}
             />
             <h2>تومان{data[0].price}</h2>
-            
-           {(data[0].count)==0?<h5>اتمام موجودی</h5>:<TextField
-              type="number"
-              InputProps={{
-                inputProps: {
-                  max: `${data[0].count}`,
-                  min: 0,
-                },
-              }}
-              onChange={handlechangenumber}
-            />}
+
+            {data[0].count == 0 ? (
+              <h5>اتمام موجودی</h5>
+            ) : (
+              <Box>
+                <button variant="contained" sx={{ borderRadius: "50%" }}>
+                  <RemoveIcon onClick={() => minesbutt()} />
+                </button>
+                <TextField
+                  type="text"
+                  value={value}
+                  size="small"
+                  sx={{maxWidth:'3rem', maxHeight:'3rem'}}
+                />
+                <button variant="contained">
+                  <AddIcon onClick={() => addbutt()} />
+                </button>
+              </Box>
+            )}
+
             <Button
               variant="contained"
               sx={{ backgroundColor: "#4caf50", margin: "1rem" }}
@@ -115,6 +166,13 @@ const [count, setcount] = useState()
         <h3>محصولات مشابه</h3>
         <FechRows item={data[0].subcategory} />
       </div>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="محصول با موفقیت به سبد افزوده شد"
+        action={action}
+      />
     </>
   );
 }

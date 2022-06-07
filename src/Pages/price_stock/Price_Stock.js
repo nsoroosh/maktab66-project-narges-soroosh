@@ -14,6 +14,7 @@ import Pagination from "@mui/material/Pagination";
 import { Box } from "@mui/material";
 import PriceEditmode from "./priceEditmode";
 import CountEditmode from "./countEditmode";
+import { CircularProgress } from "@mui/material";
 function Price_Stock() {
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
@@ -69,7 +70,8 @@ function Price_Stock() {
   }, [page, rowsPerPage]);
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <CircularProgress />
+
   }
   return (
     <>
