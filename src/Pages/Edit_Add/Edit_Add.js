@@ -58,7 +58,10 @@ function Edit_Add() {
         console.log(err);
       });
   }
-  
+  function findsub(input){
+    const found = subcategory.find(res=>res.id==input)
+return found.name
+  }
 
   useEffect(() => {
     productdata(page, rowsPerPage);
@@ -103,7 +106,7 @@ function Edit_Add() {
                   />
                 </TableCell>
                 <TableCell align="right">
-                  {subcategory[row.subcategory]}
+                  {findsub(row.subcategory)}
                 </TableCell>
                 <TableCell align="right">
                   <button onClick={()=>dispatch(edititem(row.id))}  ><EditModal   /></button>

@@ -43,10 +43,10 @@ export default function TemporaryDrawer() {
       <List>
         <h3>دیجیتال ارت</h3>
         {subcategory.map((text, index) => (
-          <ListItem key={text} disablePadding>
+          <ListItem key={text.name} disablePadding>
             <Link to={`/products/${index + 1}`}>
               <ListItemButton>
-                <ListItemText primary={text} />
+                <ListItemText primary={text.name} />
               </ListItemButton>
             </Link>
           </ListItem>
@@ -55,11 +55,11 @@ export default function TemporaryDrawer() {
       <Divider />
       <List>
         <h3>نقاشی</h3>
-        {subcategory.map((text, index) => (
-          <ListItem key={text} disablePadding>
+         {subcategory.map((text, index) => (
+          <ListItem key={text.name} disablePadding>
             <Link to={`/products/${index + 1}`}>
               <ListItemButton>
-                <ListItemText primary={text} />
+                <ListItemText primary={text.name} />
               </ListItemButton>
             </Link>
           </ListItem>
@@ -69,11 +69,11 @@ export default function TemporaryDrawer() {
 
       <List>
         <h3>عکس</h3>
-        {subcategory.map((text, index) => (
-          <ListItem key={text} disablePadding>
+         {subcategory.map((text, index) => (
+          <ListItem key={text.name} disablePadding>
             <Link to={`/products/${index + 1}`}>
               <ListItemButton>
-                <ListItemText primary={text} />
+                <ListItemText primary={text.name} />
               </ListItemButton>
             </Link>
           </ListItem>
@@ -83,11 +83,11 @@ export default function TemporaryDrawer() {
 
       <List>
         <h3>تایپوگرافی</h3>
-        {subcategory.map((text, index) => (
-          <ListItem key={text} disablePadding>
+         {subcategory.map((text, index) => (
+          <ListItem key={text.name} disablePadding>
             <Link to={`/products/${index + 1}`}>
               <ListItemButton>
-                <ListItemText primary={text} />
+                <ListItemText primary={text.name} />
               </ListItemButton>
             </Link>
           </ListItem>

@@ -34,7 +34,7 @@ export default function BasicModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          < UploadForm/>
+          < UploadForm handleClose={handleClose}/>
 
         </Box>
       </Modal>

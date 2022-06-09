@@ -8,44 +8,48 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { MenuItem, Select, InputLabel, FormControl } from "@mui/material";
 import changeitem from "../../redux/reducers/changeitem";
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const validationSchema = yup.object({
   name: yup
     .string("نام محصول را وارد کنید")
     .required("وارد کردن این مورد الزامی است"),
-  artist: yup
+    artist: yup
     .string("نام محصول را وارد کنید")
     .required("وارد کردن این مورد الزامی است"),
-  description: yup
+    description: yup
     .string("نام محصول را وارد کنید")
     .required("وارد کردن این مورد الزامی است"),
-  subcategory: yup
-  .string("توضیحات  محصول را وارد کنید")
-  .required("وارد کردن این مورد الزامی است"),
+    subcategory: yup
+    .string("نام محصول را وارد کنید")
+    .required("وارد کردن این مورد الزامی است"),
   price: yup
     .number("مبلغ مورد نظر را وارد کنید")
     .required("وارد کردن این مورد الزامی است")
     .positive("مقدار وارد شده صحیح نمی باشد")
     .integer("مقدار وارد شده صحیح نمی باشد"),
-  count: yup
+    count: yup
     .number("مبلغ مورد نظر را وارد کنید")
     .required("وارد کردن این مورد الزامی است")
     .positive("مقدار وارد شده صحیح نمی باشد")
     .integer("مقدار وارد شده صحیح نمی باشد"),
 });
 
-export default function UploadForm() {
+export default function UploadForm(props) {
   const [image, setimage] = useState([]);
   const [imgData, setImgData] = useState(null);
   const dispatch = useDispatch();
-  const [productdata, setproductdata] = useState({
+  const [data, setdata] = useState({
     image: "",
-   
     description: "",
   });
   const id = useSelector((state) => state.edititem.value);
+  const subcategory = useSelector((state) => state.subcategorydata.value);
 
+  const handleOnChange = (event,value) => {
+    console.log("Form::onChange", event);
+    setdata({...data,description: value})
+};
   const handleChangefile = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -64,7 +68,8 @@ export default function UploadForm() {
       }).then((response) => {
         const datarespose = response.data.filename;
         setimage(datarespose);
-        setproductdata({ ...productdata, image: `/files/${datarespose}` });
+        formik.setFieldValue("image",`/files/${datarespose}`)
+        formik.setFieldValue("thumbnail",`/files/${datarespose}`)
         // setpreviewimage(URL.createObjectURL(datarespose))
       });
     } catch (error) {
@@ -72,38 +77,38 @@ export default function UploadForm() {
     }
   };
 
-  console.log(productdata);
+  
+  // console.log(data);
   const formik = useFormik({
     initialValues: {
-      // image: productdata.image,
-      // thumbnail:productdata.image,
       name: "",
       artist: "",
       price: "",
-      count:"",
-      // description: productdata.description,
-      subcategory: "",
+      count: "",
+      subcategory:"",
     },
     enableReinitialize: true,
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
-      // alert(JSON.stringify(values))
-      alert( JSON.stringify({...values,image: productdata.image,thumbnail:productdata.image,description: productdata.description}))
-      // try {
-      //   const response = api({
-      //     method: "put",
-      //     url: `/products/${id}`,
-      //     data: JSON.stringify({...values,image: productdata.image,thumbnail:productdata.image,description: productdata.description}),
-      //     headers: { "Content-Type": "application/json" },
-      //   }).then((res) => {
-      //     console.log(res);
-      //   });
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      // alert(JSON.stringify(values));
+      try {
+        const response = api({
+          method: "post",
+          url: `/products`,
+          data: JSON.stringify(values),
+          headers: { "Content-Type": "application/json" },
+        }).then((res) => {
+          console.log(res);
+          props.handleClose()
+          // dispatch(changeitem(id))
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
- 
+  
+
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
@@ -171,44 +176,33 @@ export default function UploadForm() {
             helperText={formik.touched.subcategory && formik.errors.subcategory}
             label="دسته بندی"
           >
-            <MenuItem value={2}>ابستره</MenuItem>
-            <MenuItem value={4}>گرافیک ارت</MenuItem>
-            <MenuItem value={3}>ایلاستریتور</MenuItem>
-            <MenuItem value={1}>سیاه و سفید</MenuItem>
+             <MenuItem value={subcategory[1].id}>{subcategory[1].name}</MenuItem>
+            <MenuItem value={subcategory[2].id}>{subcategory[2].name}</MenuItem>
+            <MenuItem value={subcategory[3].id}>{subcategory[3].name}</MenuItem>
+            <MenuItem value={subcategory[0].id}>{subcategory[0].name}</MenuItem>
+           
           </Select>
         </FormControl>
-        {/* <TextField
-          label="توضیحات"
-          fullWidth
-          dir="ltr"
-          sx={{ margin: "1rem 0" }}
-          id="description"
-          name="description"
-          value={formik.values.description}
-          onChange={formik.handleChange}
-          error={formik.touched.description && Boolean(formik.errors.description)}
-          helperText={formik.touched.description && formik.errors.description}
-        /> */}
-          <CKEditor
-                    editor={ ClassicEditor }
-                    data={formik.values.description}
-                    onReady={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
-                    } }
-                    onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        setproductdata({...productdata,description:data})
-                        console.log( { event, editor, data } );
-                    } }
-                    onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
-                />
-        <Button color="primary" variant="contained" fullWidth type="submit">
+        <CKEditor
+          editor={ClassicEditor}
+          data={formik.values.description}
+          onReady={(editor) => {
+            // You can store the "editor" and use when it is needed.
+            console.log("Editor is ready to use!", editor);
+          }}
+          onChange={(event, editor) => {
+formik.setFieldValue("description",editor.getData())            
+            console.log({ event, editor });
+          }}
+
+          onBlur={(event, editor) => {
+            console.log("Blur.", editor);
+          }}
+          onFocus={(event, editor) => {
+            console.log("Focus.", editor);
+          }}
+        />
+        <Button color="primary" variant="contained" fullWidth type="submit" >
           ویرایش
         </Button>
       </form>

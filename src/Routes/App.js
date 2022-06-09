@@ -26,7 +26,7 @@ function App() {
         "sans-serif"
       ].join(",")
     },
-    direction: 'rtl'
+   
   });
   return (
     <ThemeProvider theme={theme}>

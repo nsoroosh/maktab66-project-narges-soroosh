@@ -33,7 +33,7 @@ export default function EditModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <EditForm/>
+          <EditForm handleClose={handleClose}/>
 
         </Box>
       </Modal>

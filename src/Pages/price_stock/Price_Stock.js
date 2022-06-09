@@ -11,16 +11,19 @@ import Paper from "@mui/material/Paper";
 import { useEffect, useState } from "react";
 import {api} from "../../Utils/axios";
 import Pagination from "@mui/material/Pagination";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import PriceEditmode from "./priceEditmode";
 import CountEditmode from "./countEditmode";
 import { CircularProgress } from "@mui/material";
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 function Price_Stock() {
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [editdata, seteditdata] = useState();
+  const [sort, setsort] = useState("asc")
   const [editId, seteditId] = useState()
   const handleChange = (event, value) => {
     setPage(value);
@@ -30,8 +33,8 @@ function Price_Stock() {
       .get(`/products`, {params:{
         _page:`${page}`,
         _limit:`${items}`,
-        _sort:"createdAt",
-        _order:"desc",
+        _sort:"price",
+        _order:`${sort}`,
         // orderStatus:`${status}`
       }})
       .then((res) => {
@@ -67,7 +70,7 @@ function Price_Stock() {
   };
   useEffect(() => {
     productdata(page, rowsPerPage);
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, sort]);
 
   if (isLoading) {
     return <CircularProgress />
@@ -91,7 +94,11 @@ function Price_Stock() {
           <TableHead>
             <TableRow>
               <TableCell align="right">نام</TableCell>
-              <TableCell align="right">قیمت</TableCell>
+              <TableCell align="right">قیمت
+              <Button>
+                {sort=="desc"?<ArrowDropDownIcon onClick={()=>setsort("asc")}/>:<ArrowDropUpIcon onClick={()=>setsort("desc")}/>}
+              </Button>
+              </TableCell>
               <TableCell align="right">موجودی</TableCell>
             </TableRow>
           </TableHead>

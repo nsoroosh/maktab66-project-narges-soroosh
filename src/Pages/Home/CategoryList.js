@@ -9,20 +9,9 @@ import { addcategorydata } from "../../redux/reducers/Category1";
 import { api } from "../../Utils/axios";
 
 export default function CategoryList() {
-  const dispatch = useDispatch();
-  const [data, setdata] = useState()
+  
   const subcategory = useSelector((state) => state.subcategorydata.value);
-  function apicall(){
-    api.get("/subcategory").then(res=>{
-      console.log(res.data)
-      setdata(res.data)
-    }).catch(res=>console.log(res))
-  }
-  useEffect(() => {
-    apicall()
-  }, [])
-  // dispatch(getdata(data))
-  console.log(data);
+  
   
   
   return (
@@ -30,10 +19,10 @@ export default function CategoryList() {
       {subcategory.map((subcategory,index) => (
         <Link
           style={{ display: "block", margin: "1rem 2rem" }}
-          to={`/products/${index+1}`}
-          key={subcategory}
+          to={`/products/${subcategory.id}`}
+          key={subcategory.name}
         >
-          {subcategory}
+          {subcategory.name}
           <FechRows item={index+1}/>
         </Link>
       ))}

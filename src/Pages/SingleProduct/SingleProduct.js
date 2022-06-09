@@ -24,14 +24,20 @@ function SingleProduct() {
   const [isLoading, setLoading] = useState(true);
   const subcategory = useSelector((state) => state.subcategorydata.value);
   const categories = useSelector((state) => state.categories.value);
+  const carditems = JSON.parse(localStorage.getItem("carditems"))
   const [open, setOpen] = React.useState(false);
   const [value, setvalue] = useState(1);
-
+console.log(carditems[0]);
   async function productdata(input) {
     try {
       const response = await api.get(`/products`).then((res) => {
         const productdata = res.data.filter((value) => value.name == input);
         setData(productdata);
+        carditems.map(item=>{
+          if(item.id==productdata[0].id){
+            setvalue(item.quantity)
+          }
+        })
         setLoading(false);
       });
     } catch (error) {
@@ -61,16 +67,46 @@ function SingleProduct() {
       </IconButton>
     </React.Fragment>
   );
+  function findsub(input){
+    const found = subcategory.find(res=>res.id==input)
+  return found.name
+  }
+  function checkbasket(){
+  
+}
 function minesbutt(){
+  carditems.map(item=>{
+  if(item.id==data[0].id){
+    if(item.quantity>1){
+    item.quantity -= 1;
+    setvalue(value-1)
+    }
+  }else
 if(value>1){
   setvalue(value-1)
 
 }
+})
+
+localStorage.setItem("carditems", JSON.stringify(carditems));
+
 }
+
 function addbutt(){
-  if(value<=data[0].count){
-    setvalue(value+1)
-  }
+  carditems.map(item=>{
+    if(item.id==data[0].id ){
+      // if(item.quantity<=data[0].count){
+      item.quantity += 1;
+      setvalue(value+1)
+      console.log("hh");
+      // }
+    }else if(value<=data[0].count){
+      setvalue(value+1)
+    }
+  })
+  localStorage.setItem("carditems", JSON.stringify(carditems));
+
+  
 }
   function addtocard() {
     let carditems = JSON.parse(localStorage.getItem("carditems"));
@@ -95,7 +131,9 @@ function addbutt(){
   // console.log(carditems);
   useEffect(() => {
     productdata(params.productId);
-  }, [params.productId]);
+    checkbasket()
+    
+  }, [params.productId,value]);
   // console.log(data[0]);
   if (isLoading) {
     return <CircularProgress />;
@@ -114,7 +152,7 @@ function addbutt(){
             <h1>{data[0].name}</h1>
             <BasicBreadcrumbs
               category={categories[1]}
-              subcategory={subcategory[data[0].subcategory]}
+              subcategory={findsub(data[0].subcategory)}
               subcategoryId={data[0].subcategory}
               name={data[0].name}
             />
@@ -159,7 +197,8 @@ function addbutt(){
             padding: "1rem",
           }}
         >
-          {data[0].description}
+          <div dangerouslySetInnerHTML={{__html: data[0].description}} />
+          
         </Box>
       </div>
       <div>
