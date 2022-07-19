@@ -7,10 +7,10 @@ import userLogin from "./userLogin";
 import Productpagelyout from "../../Lyouts/ProductPage/Productpagelyout";
 import "./login.scss";
 const getToken = () => {
-  const tokenString = localStorage.getItem("token");
-  const userToken = JSON.parse(tokenString);
+  // const tokenString = localStorage.getItem("token");
+  // const userToken = JSON.parse(tokenString);
   // console.log(userToken);
-  return tokenString;
+  // return tokenString;
 };
 console.log();
 
@@ -33,9 +33,15 @@ function Register() {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          userLogin(values.username, values.password);
-          dispatch(addtoken(getToken()));
+          userLogin(values.username, values.password).then(function (response) {
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+            dispatch(addtoken());
           navigate("/admin");
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+          
           setSubmitting(false);
 
           console.log("hello");

@@ -6,12 +6,12 @@ async function userLogin(username,password) {
       username:username,
       password:password
     })
-    .then(function (response) {
-      localStorage.setItem('token', JSON.stringify(response.data.token));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    // .then(function (response) {
+    //   localStorage.setItem('token', JSON.stringify(response.data.token));
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
    }
 export default userLogin   
 

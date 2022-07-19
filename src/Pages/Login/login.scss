@@ -3,10 +3,14 @@
 body {
   background: #eee !important;
   font-family: 'Vazirmatn', sans-serif!important ;
-  a, a:hover, a:focus, a:active {
+  a , a:focus, a:active {
+    color: black;
     text-decoration: none;
   font-family: 'Vazirmatn', sans-serif;
     
+}
+a:hover{
+  text-decoration: underline;
 }
   // position: relative;
 }

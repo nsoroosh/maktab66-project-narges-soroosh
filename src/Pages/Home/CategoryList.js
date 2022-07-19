@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import "./Home.css";
@@ -17,14 +17,16 @@ export default function CategoryList() {
   return (
     <>
       {subcategory.map((subcategory,index) => (
+        <Box>
         <Link
           style={{ display: "block", margin: "1rem 2rem" }}
           to={`/products/${subcategory.id}`}
           key={subcategory.name}
         >
           {subcategory.name}
-          <FechRows item={index+1}/>
         </Link>
+          <FechRows item={index+1}/>
+          </Box>
       ))}
       <Outlet/>
     </>

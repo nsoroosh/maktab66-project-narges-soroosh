@@ -10,9 +10,6 @@ function ProtectedRoute({ children }) {
     setlogin(authenticate)
     
   
-    return () => {
-      setlogin(authenticate)
-    }
   }, [])
   
   return login  ? (

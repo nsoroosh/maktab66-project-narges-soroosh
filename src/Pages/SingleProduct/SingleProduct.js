@@ -16,28 +16,31 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-function SingleProduct() {
+import DeleteIcon from "@mui/icons-material/Delete";
+import { AddCart } from "../../redux/actions/cardactions";
+import { connect } from "react-redux";
+import { GetAllProduct } from "../../redux/actions/cardactions";
+import { useDispatch } from "react-redux";
+import {IncreaseQuantity,DecreaseQuantity,DeleteCart} from '../../redux/actions/cardactions';
+
+function SingleProduct(props) {
   let params = useParams();
   const [data, setData] = useState([]);
   // const [carditems, setcarditems] = useState([])
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoading, setLoading] = useState(true);
   const subcategory = useSelector((state) => state.subcategorydata.value);
   const categories = useSelector((state) => state.categories.value);
-  const carditems = JSON.parse(localStorage.getItem("carditems"))
   const [open, setOpen] = React.useState(false);
   const [value, setvalue] = useState(1);
-console.log(carditems[0]);
-  async function productdata(input) {
+  // console.log(carditems[0]);
+  async function getproductdata(input) {
     try {
       const response = await api.get(`/products`).then((res) => {
+        dispatch(GetAllProduct(res.data));
         const productdata = res.data.filter((value) => value.name == input);
         setData(productdata);
-        carditems.map(item=>{
-          if(item.id==productdata[0].id){
-            setvalue(item.quantity)
-          }
-        })
         setLoading(false);
       });
     } catch (error) {
@@ -45,7 +48,6 @@ console.log(carditems[0]);
     }
   }
 
-  
   const handleClose = (event, reason) => {
     // if (reason === 'clickaway') {
     //   return;
@@ -67,73 +69,44 @@ console.log(carditems[0]);
       </IconButton>
     </React.Fragment>
   );
-  function findsub(input){
-    const found = subcategory.find(res=>res.id==input)
-  return found.name
+  function findsub(input) {
+    const found = subcategory.find((res) => res.id == input);
+    return found.name;
   }
-  function checkbasket(){
-  
-}
-function minesbutt(){
-  carditems.map(item=>{
-  if(item.id==data[0].id){
-    if(item.quantity>1){
-    item.quantity -= 1;
-    setvalue(value-1)
+
+  function minesbutt() {
+    
+    if (value > 1) {
+      setvalue(value - 1);
+
     }
-  }else
-if(value>1){
-  setvalue(value-1)
+  }
 
-}
-})
-
-localStorage.setItem("carditems", JSON.stringify(carditems));
-
-}
-
-function addbutt(){
-  carditems.map(item=>{
-    if(item.id==data[0].id ){
-      // if(item.quantity<=data[0].count){
-      item.quantity += 1;
-      setvalue(value+1)
-      console.log("hh");
-      // }
-    }else if(value<=data[0].count){
-      setvalue(value+1)
+  function addbutt() {
+    if (value <= data[0].count) {
+      setvalue(value + 1);
+      props.increasequantity(data[0].id)
     }
-  })
-  localStorage.setItem("carditems", JSON.stringify(carditems));
-
-  
-}
+  }
   function addtocard() {
-    let carditems = JSON.parse(localStorage.getItem("carditems"));
-    if (carditems == null) {
-      carditems = [];
-    }
-    localStorage.setItem(
-      "carditems",
-      JSON.stringify([
-        ...carditems,
-        {
-          id: `${data[0].id}`,
-          name: `${data[0].name}`,
-          thumbnail: `${data[0].thumbnail}`,
-          price: `${data[0].price}`,
-          quantity: value,
-        },
-      ])
-    );
+    props.AddCart({
+      id: `${data[0].id}`,
+      name: `${data[0].name}`,
+      image: `${data[0].image}`,
+      thumbnail: `${data[0].image}`,
+      price: `${data[0].price}`,
+      quantity: value,
+    });
     setOpen(true);
   }
-  // console.log(carditems);
+  console.log(data);
   useEffect(() => {
-    productdata(params.productId);
-    checkbasket()
-    
-  }, [params.productId,value]);
+    getproductdata(params.productId);
+    return ()=>{
+    // setvalue(1)
+
+    }
+  }, [params.productId, value]);
   // console.log(data[0]);
   if (isLoading) {
     return <CircularProgress />;
@@ -169,14 +142,13 @@ function addbutt(){
                   type="text"
                   value={value}
                   size="small"
-                  sx={{maxWidth:'3rem', maxHeight:'3rem'}}
+                  sx={{ maxWidth: "3rem", maxHeight: "3rem" }}
                 />
                 <button variant="contained">
                   <AddIcon onClick={() => addbutt()} />
                 </button>
               </Box>
             )}
-
             <Button
               variant="contained"
               sx={{ backgroundColor: "#4caf50", margin: "1rem" }}
@@ -197,8 +169,7 @@ function addbutt(){
             padding: "1rem",
           }}
         >
-          <div dangerouslySetInnerHTML={{__html: data[0].description}} />
-          
+          <div dangerouslySetInnerHTML={{ __html: data[0].description }} />
         </Box>
       </div>
       <div>
@@ -215,4 +186,17 @@ function addbutt(){
     </>
   );
 }
-export default Productpagelyout(SingleProduct);
+const mapStateToProps = (state) => {
+  return {
+    _products: state._todoProduct,
+  };
+};
+function mapDispatchToProps(dispatch) {
+  return {
+    AddCart: (item) => dispatch(AddCart(item)),
+    increasequantity:(item)=>dispatch(IncreaseQuantity(item))
+  };
+}
+export default Productpagelyout(
+  connect(mapStateToProps, mapDispatchToProps)(SingleProduct)
+);

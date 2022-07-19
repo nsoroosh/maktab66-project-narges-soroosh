@@ -3,11 +3,11 @@ import { createSlice } from '@reduxjs/toolkit'
 export const TokenSlice = createSlice({
   name: 'token',
   initialState: {
-    value: false
+    value: JSON.parse(localStorage.getItem("token"))
   },
   reducers: {
     addtoken:(state,action)=>{
-        state.value=action.payload
+        state.value=JSON.parse(localStorage.getItem("token"))
     }
   }
 })

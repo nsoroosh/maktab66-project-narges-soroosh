@@ -84,6 +84,7 @@ export default function UploadForm(props) {
         method: "get",
         url: `/products/${id}`,
       }).then((response) => {
+       
         // setImgData(response.data.image)
         // console.log(response.data.image);
         setproductdata({
@@ -95,6 +96,7 @@ export default function UploadForm(props) {
           description: response.data.description,
           subcategory: response.data.subcategory,
         });
+        
       });
     } catch (error) {
       console.log(error);

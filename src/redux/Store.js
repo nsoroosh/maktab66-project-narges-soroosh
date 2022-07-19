@@ -4,12 +4,14 @@ import  subcategorydataReducer  from './reducers/Subcategory'
 import EdititemReducer from './reducers/Edititem'
 import category1Reducer from "./reducers/Category1"
 import ChangeItemReducer from './reducers/changeitem'
+import cartitemsReducer from './reducers/carditems'
 export default configureStore({
   reducer: {
       token:TokenReducer,
       subcategorydata:subcategorydataReducer,
       edititem:EdititemReducer,
       categories:category1Reducer,
-      changeitem:ChangeItemReducer
+      changeitem:ChangeItemReducer,
+      cartitems:cartitemsReducer
   }
 })
